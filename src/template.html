@@ -1,0 +1,1331 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Capitolo 16 – Riflessione e autovalutazione</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+/* Layout: palcoscenico 16:9 (1600×900) scalato sullo schermo; ogni relatore ha il suo colore; slide con un'idea sola e un'illustrazione grande; barra in basso con relatore, cronometro e avanzamento. */
+:root{
+  --paper:#f5f6fa;
+  --ink:#141b34;
+  --muted:#5b6380;
+  --line:#dfe2ec;
+  --white:#ffffff;
+  --ok:#16936b;
+  --bad:#cf3b4f;
+  --c-intro:#2f56d9;
+  --c-id:#0e9486;
+  --c-tempo:#ea6f12;
+  --c-multi:#d2397f;
+  --c-badge:#6d45e3;
+  --display:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;
+  --body:"Atkinson Hyperlegible","Segoe UI",system-ui,sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;overflow:hidden;background:#0d1226}
+body{font-family:var(--body);color:var(--ink)}
+button{font:inherit;cursor:pointer}
+:focus-visible{outline:4px solid #f5b531;outline-offset:3px}
+
+#stage{position:absolute;left:50%;top:50%;width:1600px;height:900px;transform-origin:0 0;background:var(--paper);overflow:hidden;border-radius:4px}
+.slide{position:absolute;inset:0 0 78px 0;padding:64px 88px 34px;display:none;--c:var(--c-intro)}
+.slide.on{display:flex;flex-direction:column;justify-content:center;animation:in .45s ease}
+.slide.on > *{flex:none}
+@keyframes in{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.slide[data-sec="identita"]{--c:var(--c-id)}
+.slide[data-sec="tempestivita"]{--c:var(--c-tempo)}
+.slide[data-sec="multimediale"]{--c:var(--c-multi)}
+.slide[data-sec="badge"]{--c:var(--c-badge)}
+.slide::before{content:"";position:absolute;left:0;top:0;bottom:0;width:14px;background:var(--c)}
+
+h1,h2,h3{font-family:var(--display);margin:0;line-height:1.05;text-wrap:balance}
+h1{font-size:92px;font-weight:800;letter-spacing:-.02em}
+h2{font-size:64px;font-weight:800;letter-spacing:-.015em;margin-bottom:26px}
+h3{font-size:32px;font-weight:700;margin-bottom:10px}
+p{margin:0 0 14px}
+.eyebrow{font-weight:700;font-size:22px;letter-spacing:.12em;text-transform:uppercase;color:var(--c);margin-bottom:14px}
+.lead{font-size:40px;line-height:1.3;font-family:var(--display);font-weight:500}
+.lead b,.mark{background:linear-gradient(transparent 58%,color-mix(in srgb,var(--c) 22%,transparent) 58%);font-weight:700}
+.txt{font-size:29px;line-height:1.42}
+.cite{color:var(--muted);font-size:20px;font-style:italic}
+.ic{display:inline-block;width:1em;height:1em;vertical-align:middle;line-height:0}
+.ic svg{width:100%;height:100%}
+
+.cols{display:grid;gap:44px;align-items:center}
+.c2{grid-template-columns:1.15fr .85fr}
+.c2e{grid-template-columns:1fr 1fr}
+.tiles{display:grid;gap:22px}
+.t2{grid-template-columns:repeat(2,1fr)}.t3{grid-template-columns:repeat(3,1fr)}.t4{grid-template-columns:repeat(4,1fr)}.t5{grid-template-columns:repeat(5,1fr)}.t6{grid-template-columns:repeat(3,1fr)}
+.tile{background:var(--white);border-radius:26px;padding:32px 30px 30px;box-shadow:0 1px 0 var(--line),0 10px 30px rgba(20,27,52,.06);font-size:27px;line-height:1.38}
+.tile .ic{font-size:96px;margin-bottom:14px}
+.tile h3{font-size:34px}
+.tiles.compact .tile{padding:20px 24px;font-size:24px}
+.tiles.compact .tile h3{font-size:29px}
+.tile.tint{background:color-mix(in srgb,var(--c) 10%,white)}
+.tile.solid{background:var(--c);color:#fff}
+.num{font-family:var(--display);font-weight:800;font-size:30px;width:56px;height:56px;border-radius:50%;background:var(--c);color:#fff;display:grid;place-items:center;flex:none}
+
+/* Scene illustrate */
+.scene{position:relative;width:560px;height:560px;margin:0 auto}
+.scene .blob{position:absolute;inset:40px;border-radius:50%;background:color-mix(in srgb,var(--c) 16%,white)}
+.scene .blob2{position:absolute;inset:110px;border-radius:50%;background:color-mix(in srgb,var(--c) 26%,white)}
+.scene .main{position:absolute;left:50%;top:50%;font-size:260px;transform:translate(-50%,-50%)}
+.scene .sat{position:absolute;font-size:110px;background:#fff;border-radius:50%;width:150px;height:150px;display:grid;place-items:center;box-shadow:0 12px 30px rgba(20,27,52,.12);animation:float 6s ease-in-out infinite}
+.scene .sat .ic{font-size:92px}
+.scene .sat:nth-of-type(2n){animation-delay:-3s}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+.p1{left:8px;top:40px}.p2{right:8px;top:40px}.p3{left:0;bottom:50px}.p4{right:0;bottom:50px}.p5{left:205px;top:-10px}
+
+/* Copertina e divisori */
+.slide.cover{background:radial-gradient(circle at 78% 40%,#2c4bd0 0,#1a2a7a 45%,#121a44 100%);color:#fff}
+.slide.cover::before{display:none}
+.slide.cover .eyebrow{color:#ffc65a}
+.cover-art{position:absolute;right:70px;top:90px;width:640px;height:640px}
+.cover-art .ring{position:absolute;inset:0;border-radius:50%;border:2px dashed rgba(255,255,255,.25)}
+.cover-art .ring.r2{inset:110px;border-style:solid;border-color:rgba(255,255,255,.12);background:rgba(255,255,255,.06)}
+.cover-art .main{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:240px}
+.cover-art .sat{position:absolute;width:140px;height:140px;border-radius:32px;background:#fff;display:grid;place-items:center;box-shadow:0 20px 50px rgba(0,0,0,.35);animation:float 7s ease-in-out infinite}
+.cover-art .sat .ic{font-size:96px}
+.slide.divider{background:var(--c);color:#fff}
+.slide.divider::before{display:none}
+.slide.divider .big-n{font-family:var(--display);font-weight:800;font-size:300px;line-height:.8;opacity:.16;position:absolute;left:70px;top:30px}
+.slide.divider .eyebrow{color:rgba(255,255,255,.85)}
+.slide.divider h1{max-width:900px;font-size:96px}
+.slide.divider .who-big{display:inline-flex;align-items:center;gap:14px;background:rgba(255,255,255,.16);border-radius:999px;padding:10px 26px 10px 10px;font-size:30px;font-weight:700;margin-top:34px}
+.slide.divider .who-big .av{width:58px;height:58px;border-radius:50%;background:#fff;color:var(--c);display:grid;place-items:center;font-family:var(--display);font-weight:800}
+.divider-art{position:absolute;right:110px;top:50%;transform:translateY(-50%);width:520px;height:520px;border-radius:50%;background:rgba(255,255,255,.14);display:grid;place-items:center}
+.divider-art .in{width:400px;height:400px;border-radius:50%;background:#fff;display:grid;place-items:center;font-size:250px}
+.divider-art .sat{position:absolute;width:140px;height:140px;border-radius:50%;background:#fff;display:grid;place-items:center;box-shadow:0 18px 40px rgba(0,0,0,.2);animation:float 6s ease-in-out infinite}
+.divider-art .sat .ic{font-size:90px}
+
+/* Agenda */
+.agenda{display:grid;grid-template-columns:repeat(6,1fr);gap:16px;margin-top:20px}
+.ag{border-radius:22px;padding:22px 18px;color:#fff;min-height:420px;display:flex;flex-direction:column;gap:10px}
+.ag .ic{font-size:90px}
+.ag .t{font-family:var(--display);font-weight:700;font-size:26px;line-height:1.1}
+.ag .m{font-size:20px;opacity:.9;margin-top:auto}
+.ag input{font:inherit;font-size:20px;font-weight:700;border:0;border-radius:10px;padding:8px 10px;width:100%;color:var(--ink);background:rgba(255,255,255,.92)}
+
+/* Attività */
+.act-pill{align-self:flex-start;display:inline-flex;align-items:center;gap:10px;background:#ffc65a;color:var(--ink);font-weight:700;font-size:20px;border-radius:999px;padding:6px 16px 6px 8px;margin-bottom:14px}
+.act-pill .ic{font-size:32px}
+.panel{background:#fff;border-radius:26px;padding:26px 30px;box-shadow:0 10px 30px rgba(20,27,52,.07)}
+.poll{display:grid;gap:18px}
+.prow{display:grid;grid-template-columns:320px 1fr 200px;gap:20px;align-items:center;font-size:32px;font-weight:700}
+.bar{height:70px;background:#eef0f6;border-radius:14px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:var(--c);border-radius:14px;transition:width .4s}
+.prow:nth-child(2) .bar i{background:#f5b531}
+.prow:nth-child(3) .bar i{background:var(--ink)}
+.cnt{display:flex;align-items:center;gap:10px;justify-content:flex-end}
+.cnt button{width:50px;height:50px;border-radius:12px;border:2px solid var(--line);background:#fff;font-size:28px;font-weight:700;color:var(--ink)}
+.cnt output{font-family:var(--display);font-weight:800;font-size:40px;min-width:54px;text-align:center;font-variant-numeric:tabular-nums}
+.btn{border:0;border-radius:14px;padding:14px 24px;font-weight:700;font-size:22px;background:var(--c);color:#fff}
+.btn.ghost{background:#fff;color:var(--ink);border:2px solid var(--line)}
+.row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.small{font-size:19px;color:var(--muted)}
+
+.chips{display:flex;flex-wrap:wrap;gap:12px}
+.chip{border:2px solid var(--line);background:#fff;border-radius:999px;padding:10px 20px;font-weight:700;font-size:22px;color:var(--ink);display:inline-flex;align-items:center;gap:10px}
+.chip .ic{font-size:34px}
+.chip.on{background:var(--c);border-color:var(--c);color:#fff}
+.chip.static{cursor:default}
+.folder{min-height:150px;border:3px dashed color-mix(in srgb,var(--c) 45%,white);border-radius:22px;padding:16px;display:flex;flex-wrap:wrap;gap:10px;align-content:flex-start;background:color-mix(in srgb,var(--c) 6%,white)}
+.status{margin-top:14px;padding:14px 18px;border-radius:14px;font-weight:700;font-size:23px;background:#fff3d6}
+.status.good{background:#dff4ec;color:#0d5c43}
+
+.q{font-family:var(--display);font-size:38px;font-weight:700;margin:4px 0 18px;line-height:1.15}
+.opt{display:grid;grid-template-columns:58px 1.2fr 1fr 190px;gap:16px;align-items:center;padding:12px 14px;border-radius:18px;background:#f5f6fa;margin-bottom:12px;font-size:25px;font-weight:700}
+.opt .l{width:52px;height:52px;border-radius:14px;background:var(--ink);color:#fff;display:grid;place-items:center;font-family:var(--display);font-size:26px}
+.opt .bar{height:44px}
+.opt .bar i{background:var(--muted)}
+.opt.right{background:#dff4ec}
+.opt.right .l,.opt.right .bar i{background:var(--ok)}
+.note-ok{display:none;margin-top:12px;padding:16px 20px;border-radius:16px;background:#dff4ec;font-size:23px}
+.note-ok.on{display:block}
+
+.steps{display:grid;gap:16px}
+.step{display:flex;gap:22px;align-items:center;background:#fff;border-radius:22px;padding:22px 26px;font-size:29px;line-height:1.35;box-shadow:0 1px 0 var(--line);border:3px solid transparent;transition:border-color .3s,background .3s}
+.step .ic{font-size:72px;flex:none}
+.step > span:not(.num){flex:1}
+.step.lit{border-color:var(--c);background:color-mix(in srgb,var(--c) 8%,white)}
+
+.versus{display:grid;grid-template-columns:1fr 1fr;gap:30px}
+.vs{border-radius:28px;padding:30px;background:#fff;box-shadow:0 10px 30px rgba(20,27,52,.07)}
+.vs.old{background:#eceef4}
+.vs h3{font-size:36px}
+.flow{display:flex;align-items:center;justify-content:center;gap:16px;margin:16px 0 18px}
+.flow .ic{font-size:120px}
+.flow .arrow{font-family:var(--display);font-weight:800;font-size:60px;color:var(--muted)}
+.vs.new .arrow{color:var(--c)}
+
+.ladder{display:grid;gap:12px}
+.rung{display:grid;grid-template-columns:270px 1fr;gap:16px;align-items:start;background:#fff;border-radius:18px;padding:14px 18px;border-left:10px solid var(--c)}
+.rung:nth-child(2){border-left-color:color-mix(in srgb,var(--c) 75%,white)}
+.rung:nth-child(3){border-left-color:color-mix(in srgb,var(--c) 50%,white)}
+.rung:nth-child(4){border-left-color:color-mix(in srgb,var(--c) 30%,white)}
+.rung h4{margin:0;font-family:var(--display);font-size:25px}
+.rung p{margin:2px 0 0;font-size:18px;color:var(--muted)}
+.notes{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:6px}
+.note{background:#fff3c2;border-radius:10px;padding:6px 12px;font-size:20px}
+.addline{display:flex;gap:8px}
+.addline input{flex:1;min-width:0;border:2px solid var(--line);border-radius:12px;padding:10px 14px;font:inherit;font-size:20px}
+
+.badge-wrap{display:grid;grid-template-columns:330px 1fr;gap:30px;align-items:center}
+.binfo{background:#fff;border-radius:18px;padding:16px 20px;font-size:23px;margin-bottom:12px;box-shadow:0 1px 0 var(--line)}
+.binfo b{display:block;color:var(--c);font-size:17px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:2px}
+
+.diploma{border:5px double var(--ink);border-radius:10px;padding:22px 26px;background:#fffdf6;display:grid;gap:12px;position:relative}
+.diploma .seal{position:absolute;right:-26px;top:-30px;font-size:96px}
+.diploma label{display:grid;grid-template-columns:170px 1fr;gap:14px;align-items:center;font-weight:700;font-size:22px}
+.diploma input{font:inherit;font-size:22px;border:2px solid var(--line);border-radius:10px;padding:8px 12px;background:#fff}
+.hash{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:17px;word-break:break-all;background:#eef0f6;border-radius:12px;padding:10px 14px}
+.verdict{font-family:var(--display);font-weight:800;font-size:40px;padding:18px;border-radius:20px;text-align:center;margin-top:14px}
+.verdict.ok{background:#dff4ec;color:var(--ok)}
+.verdict.no{background:#fde6ea;color:var(--bad)}
+.chain{display:flex;align-items:center;gap:10px;margin:8px 0 24px}
+.block{flex:1;background:#fff;border-radius:20px;padding:16px;text-align:center;font-weight:700;font-size:22px;box-shadow:0 8px 20px rgba(20,27,52,.07);border-top:8px solid var(--c)}
+.block .ic{font-size:70px;display:block;margin:0 auto 6px}
+.chain > .ic{font-size:56px}
+
+.omp-clock{font-family:var(--display);font-weight:800;font-size:170px;line-height:1;text-align:center;font-variant-numeric:tabular-nums}
+.omp-clock.done{color:var(--bad)}
+.stickies{display:flex;flex-wrap:wrap;gap:12px;margin-top:14px;max-height:250px;overflow:auto}
+.sticky{background:#fff3b0;border-radius:6px;padding:12px 16px;width:250px;min-height:90px;font-size:20px;transform:rotate(-1.2deg);box-shadow:0 3px 0 rgba(0,0,0,.06)}
+.sticky:nth-child(2n){background:#ffdcea;transform:rotate(1deg)}
+.sticky:nth-child(3n){background:#d9efff}
+
+.tl{display:flex;align-items:center;gap:0;margin:20px 0}
+.tl .dot{width:80px;height:80px;border-radius:50%;background:var(--c);color:#fff;display:grid;place-items:center;font-family:var(--display);font-weight:800;font-size:28px;flex:none}
+.tl .seg{flex:1;height:10px;background:color-mix(in srgb,var(--c) 35%,white)}
+
+.shift{display:grid;grid-template-columns:1fr 90px 1fr;align-items:center;background:#fff;border-radius:24px;padding:26px 30px;font-size:36px;box-shadow:0 1px 0 var(--line)}
+.shift .from{text-align:right;color:var(--muted)}
+.shift .arr{text-align:center;font-family:var(--display);font-weight:800;font-size:56px;color:var(--c)}
+.thanks{position:absolute;inset:0;display:grid;place-items:center;text-align:center}
+
+/* Indice con i pallini e il fantasmino */
+.slide.index{background:#fff;justify-content:flex-start;padding-top:46px}
+.slide.index::before{display:none}
+.idx-title{text-align:center;max-width:1300px;margin:0 auto}
+.idx-title .eyebrow{color:var(--c-intro)}
+.idx-title h1{font-size:94px;line-height:1.0}
+.idx-sub{font-family:var(--display);font-size:34px;color:var(--muted);margin-top:12px}
+.dots{display:flex;justify-content:center;gap:58px;margin-top:44px;position:relative}
+.dots::before{content:"";position:absolute;left:12%;right:12%;top:52px;height:6px;border-radius:3px;background:repeating-linear-gradient(90deg,#d5d9e6 0 18px,transparent 18px 30px)}
+.dot-btn{position:relative;border:0;background:none;padding:0;display:flex;flex-direction:column;align-items:center;gap:14px;width:150px;color:var(--ink)}
+.dot-btn .d{width:110px;height:110px;border-radius:50%;background:var(--dc);display:grid;place-items:center;box-shadow:0 10px 24px color-mix(in srgb,var(--dc) 45%,transparent);transition:transform .25s}
+.dot-btn .d .ic{font-size:62px}
+.dot-btn .d::after{content:"";position:absolute;width:126px;height:126px;border-radius:50%;border:3px solid var(--dc);opacity:0;top:-8px;transition:opacity .25s}
+.dot-btn:hover .d,.dot-btn:focus-visible .d{transform:scale(1.12)}
+.dot-btn:hover .d::after{opacity:.45}
+.dot-btn .lab{font-family:var(--display);font-weight:700;font-size:22px;line-height:1.1;text-align:center}
+.dot-btn .who{font-size:18px;color:var(--muted)}
+.dot-btn .tick{position:absolute;top:-6px;right:14px;width:38px;height:38px;border-radius:50%;background:var(--ok);color:#fff;font-weight:800;display:none;place-items:center;font-size:22px;border:3px solid #fff}
+.dot-btn.done .tick{display:grid}
+.dot-btn.next .d{animation:pulse 1.6s ease-in-out infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 color-mix(in srgb,var(--dc) 55%,transparent)}50%{box-shadow:0 0 0 22px transparent}}
+.ghost-wrap{position:absolute;left:110px;right:110px;bottom:14px;display:flex;align-items:center;gap:22px}
+.ghost{flex:none;width:150px;height:173px;animation:gfloat 3.2s ease-in-out infinite;cursor:pointer}
+@keyframes gfloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+.g-eyes{transform-origin:100px 92px;animation:blink 4.5s infinite}
+@keyframes blink{0%,92%,100%{transform:scaleY(1)}95%{transform:scaleY(.1)}}
+.g-wave{transform-origin:170px 118px;animation:wave 1.2s ease-in-out infinite}
+@keyframes wave{0%,100%{transform:rotate(0)}50%{transform:rotate(-18deg)}}
+.bubble{position:relative;background:var(--ink);color:#fff;border-radius:26px;padding:20px 28px;font-size:27px;line-height:1.35;max-width:1100px;min-height:76px;box-shadow:0 14px 34px rgba(20,27,52,.2)}
+.bubble::after{content:"";position:absolute;left:-14px;top:calc(50% - 14px);border:14px solid transparent;border-right-color:var(--ink);border-left:0}
+.bubble b{color:#ffc65a}
+.zoom{position:absolute;width:110px;height:110px;border-radius:50%;pointer-events:none;opacity:0;z-index:20}
+.mini-ghost{position:absolute;right:50px;bottom:10px;display:flex;align-items:center;gap:14px}
+.mini-ghost .bubble{font-size:22px;padding:14px 20px;max-width:420px;background:#fff;color:var(--ink)}
+.mini-ghost .bubble b{color:var(--c)}
+.mini-ghost .bubble::after{left:auto;right:-14px;border-right-color:transparent;border-left:14px solid #fff;border-right:0}
+.mini-ghost .ghost{width:100px;height:115px}
+#home{font-weight:700}
+/* Nomi dei relatori nascosti per ora: togliere SHOW_NAMES=false nello script per riattivarli */
+body.nonames .who-big,body.nonames #spk,body.nonames .dot-btn .who,body.nonames .ag input,body.nonames #names-note,body.nonames #all-names{display:none!important}
+
+/* Barra in basso */
+#bar{position:absolute;left:0;right:0;bottom:0;height:78px;background:var(--ink);color:#fff;display:flex;align-items:center;gap:20px;padding:0 26px;font-size:20px}
+#bar .sec{display:flex;align-items:center;gap:12px;font-weight:700}
+#bar .sw{width:18px;height:18px;border-radius:5px;background:var(--cur,#2f56d9)}
+#bar .spk{color:#c4cbe6}
+#bar .sp{flex:1}
+#bar .prog{position:absolute;left:0;top:0;height:5px;background:var(--cur,#2f56d9);transition:width .3s}
+#bar .clock{font-family:var(--display);font-weight:800;font-size:34px;font-variant-numeric:tabular-nums;min-width:96px;text-align:right}
+#bar .clock.late{color:#ff8d9b}
+#bar button{border:0;border-radius:10px;background:#283055;color:#fff;font-weight:700;padding:10px 14px;font-size:18px}
+#bar button:hover{background:#36407016;background:#343e6c}
+#bar .count{color:#c4cbe6;font-variant-numeric:tabular-nums}
+
+/* Dal vivo */
+.live-only{display:none!important}
+body.live .live-only{display:revert!important}
+.livebar{display:flex;align-items:center;gap:12px;margin:0 0 14px;padding:10px 12px;border-radius:16px;background:#141b34;color:#fff;font-size:19px}
+.livebar .st{font-weight:700}
+.livebar .st.on{color:#7ef0c2}
+.livebar .n{margin-left:auto;color:#c4cbe6}
+.livebar button{border:0;border-radius:10px;padding:8px 14px;font-weight:700;font-size:18px}
+.lb-open{background:#16936b;color:#fff}.lb-close{background:#cf3b4f;color:#fff}.lb-reset{background:#343e6c;color:#fff}
+.isopen{box-shadow:0 0 0 6px #16936b!important}
+.overlay{position:absolute;inset:0;background:rgba(13,18,38,.86);display:none;place-items:center;z-index:30}
+.overlay.on{display:grid}
+.ov{background:#fff;border-radius:30px;padding:40px;display:grid;grid-template-columns:420px 1fr;gap:40px;align-items:center;width:1180px}
+#qr svg{width:420px;height:420px;display:block}
+.ov-url{font-family:var(--display);font-weight:800;font-size:44px;color:var(--c-intro);word-break:break-all;line-height:1.1}
+
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div id="stage">
+
+<!-- ================= INTRODUZIONE ================= -->
+<section class="slide index" data-sec="intro" id="indice">
+  <div class="idx-title">
+    <div class="eyebrow">Capitolo 16</div>
+    <h1>Tecnologie per la riflessione e l'autovalutazione</h1>
+    <p class="idx-sub">E-portfolio, feedback, open badge</p>
+  </div>
+  <div class="dots" id="dots"></div>
+  <div class="ghost-wrap" id="ghost">
+    <svg class="ghost" viewBox="0 0 200 230" role="img" aria-label="Il fantasmino guida">
+      <ellipse class="g-shadow" cx="100" cy="222" rx="54" ry="7" fill="#141b34" opacity=".12"/>
+      <g class="g-body">
+        <path d="M100 12 C52 12 30 52 30 102 L30 188 q14 -18 28 0 q14 18 28 0 q14 -18 28 0 q14 18 28 0 q14 -18 28 0 L170 102 C170 52 148 12 100 12z" fill="#fff" stroke="#141b34" stroke-width="5" stroke-linejoin="round"/>
+        <path d="M30 120 q-22 -4 -20 -26" fill="none" stroke="#141b34" stroke-width="5" stroke-linecap="round"/>
+        <path class="g-wave" d="M170 118 q24 -6 24 -34" fill="none" stroke="#141b34" stroke-width="5" stroke-linecap="round"/>
+        <g class="g-eyes"><ellipse cx="78" cy="92" rx="9" ry="13" fill="#141b34"/><ellipse cx="122" cy="92" rx="9" ry="13" fill="#141b34"/><circle cx="81" cy="87" r="3.5" fill="#fff"/><circle cx="125" cy="87" r="3.5" fill="#fff"/></g>
+        <ellipse cx="62" cy="118" rx="11" ry="7" fill="#ff9fb8" opacity=".8"/><ellipse cx="138" cy="118" rx="11" ry="7" fill="#ff9fb8" opacity=".8"/>
+        <path d="M88 120 q12 12 24 0" fill="none" stroke="#141b34" stroke-width="5" stroke-linecap="round"/>
+        <path d="M70 30 q-6 -16 6 -22 q6 10 -6 22z" fill="#ffc65a" opacity="0"/>
+      </g>
+    </svg>
+    <div class="bubble" id="bubble" aria-live="polite"></div>
+  </div>
+  <div class="zoom" id="zoom"></div>
+</section>
+
+<section class="slide" data-sec="intro">
+  <div class="eyebrow">Come ci siamo divisi</div>
+  <h2>40 minuti, 6 tappe</h2>
+  <div class="agenda">
+    <div class="ag" style="background:var(--c-intro)"><i class="ic" data-ic="compass"></i><div class="t">Introduzione</div><input data-name="A" aria-label="Nome"><div class="m">4 minuti</div></div>
+    <div class="ag" style="background:var(--c-id)"><i class="ic" data-ic="open-file-folder"></i><div class="t">16.1 E-portfolio e identità</div><input data-name="B" aria-label="Nome"><div class="m">8 minuti</div></div>
+    <div class="ag" style="background:var(--c-tempo)"><i class="ic" data-ic="stopwatch"></i><div class="t">16.2 Feedback tempestivo</div><input data-name="C" aria-label="Nome"><div class="m">8 minuti</div></div>
+    <div class="ag" style="background:var(--c-multi)"><i class="ic" data-ic="headphone"></i><div class="t">16.2 Feedback multimediale e tra pari</div><input data-name="D" aria-label="Nome"><div class="m">8 minuti</div></div>
+    <div class="ag" style="background:var(--c-badge)"><i class="ic" data-ic="sports-medal"></i><div class="t">16.3 Open badge e Blockchain</div><input data-name="E" aria-label="Nome"><div class="m">8 minuti</div></div>
+    <div class="ag" style="background:#141b34"><i class="ic" data-ic="light-bulb"></i><div class="t">Conclusioni</div><input data-name="A" aria-label="Nome" tabindex="-1"><div class="m">4 minuti</div></div>
+  </div>
+  <p class="small" id="names-note" style="margin-top:14px">Scrivete i vostri nomi nei riquadri: compaiono in basso durante la presentazione.</p>
+</section>
+
+<section class="slide" data-sec="intro">
+  <div class="cols c2">
+    <div>
+      <div class="eyebrow">Il tema del capitolo</div>
+      <h2>Tecnologie che aiutano a riflettere</h2>
+      <p class="lead">Come le tecnologie digitali possono sostenere la <b>riflessione</b>, l'<b>autovalutazione</b> e la costruzione dell'<b>identità personale e professionale</b> di studenti e docenti.</p>
+      <p class="txt">Un tema molto importante per la nostra formazione di <b>future insegnanti</b>.</p>
+    </div>
+    <div class="scene"><div class="blob"></div><div class="blob2"></div><div class="main"><i class="ic" data-ic="mirror"></i></div>
+      <div class="sat p1"><i class="ic" data-ic="thinking-face"></i></div><div class="sat p2"><i class="ic" data-ic="seedling"></i></div><div class="sat p3"><i class="ic" data-ic="graduation-cap"></i></div><div class="sat p4"><i class="ic" data-ic="laptop"></i></div></div>
+  </div>
+</section>
+
+<section class="slide" data-sec="intro">
+  <div class="eyebrow">La domanda di partenza</div>
+  <div class="panel" style="padding:34px 40px;border-left:14px solid var(--c)">
+    <p class="lead" style="font-size:44px;margin:0">«In che modo le tecnologie possono aiutare le persone a <b>riflettere</b> su ciò che hanno appreso, a <b>riconoscere</b> le proprie competenze e a dare <b>senso</b> al proprio percorso?»</p>
+  </div>
+  <div class="cols c2e" style="margin-top:34px;gap:30px">
+    <div class="row" style="gap:22px;flex-wrap:nowrap"><i class="ic" data-ic="puzzle-piece" style="font-size:120px;flex:none"></i><p class="txt" style="margin:0">Oggi i percorsi di studio e di lavoro sono sempre più <b>frammentati</b>, <b>non lineari</b> e <b>diversificati</b>.</p></div>
+    <div class="row" style="gap:22px;flex-wrap:nowrap"><i class="ic" data-ic="open-file-folder" style="font-size:120px;flex:none"></i><p class="txt" style="margin:0">Non bastano più <b>titoli e voti</b>: bisogna saper documentare <b>esperienze, competenze, riflessioni e crescita personale</b>.</p></div>
+  </div>
+</section>
+
+<section class="slide" data-sec="intro">
+  <div class="act-pill"><i class="ic" data-ic="raising-hands"></i>Tocca a voi</div>
+  <h2>Vi è più utile un voto secco o un commento che vi spiega cosa migliorare?</h2>
+  <div class="cols c2" style="align-items:start">
+    <div class="panel" data-act="intro">
+      <div class="poll" data-poll="intro">
+        <div class="prow"><span><i class="ic" data-ic="hundred-points" style="font-size:44px"></i> Un voto secco</span><div class="bar"><i></i></div><div class="cnt"><button aria-label="meno">−</button><output>0</output><button aria-label="più">+</button></div></div>
+        <div class="prow"><span><i class="ic" data-ic="memo" style="font-size:44px"></i> Un commento</span><div class="bar"><i></i></div><div class="cnt"><button aria-label="meno">−</button><output>0</output><button aria-label="più">+</button></div></div>
+      </div>
+      <p class="small" style="margin-top:14px">Alzate la mano: contiamo con +. <span class="live-only">Oppure rispondete dal telefono.</span></p>
+    </div>
+    <div class="scene" style="width:400px;height:400px"><div class="blob"></div><div class="main" style="font-size:200px"><i class="ic" data-ic="raised-hand"></i></div></div>
+  </div>
+</section>
+
+<section class="slide" data-sec="intro">
+  <div class="eyebrow">Primo strumento</div>
+  <h2>L'e-portfolio, uno spazio personale</h2>
+  <div class="cols c2e" style="align-items:start;gap:34px">
+    <div>
+      <p class="txt">Non una semplice raccolta di lavori: lo studente sceglie le <b>prove più significative</b> del suo apprendimento.</p>
+      <div class="chips" style="margin-bottom:24px"><span class="chip static"><i class="ic" data-ic="page-facing-up"></i>Documenti</span><span class="chip static"><i class="ic" data-ic="framed-picture"></i>Immagini</span><span class="chip static"><i class="ic" data-ic="studio-microphone"></i>Audio</span><span class="chip static"><i class="ic" data-ic="video-camera"></i>Video</span><span class="chip static"><i class="ic" data-ic="writing-hand"></i>Riflessioni</span></div>
+      <p class="txt" style="margin-bottom:10px">Mostra non solo <b>cosa ha fatto</b>, ma anche:</p>
+      <div class="tiles t2 compact" style="gap:12px">
+        <div class="tile tint row" style="gap:12px;flex-wrap:nowrap"><i class="ic" data-ic="brain" style="font-size:50px;margin:0"></i>come ha ragionato</div>
+        <div class="tile tint row" style="gap:12px;flex-wrap:nowrap"><i class="ic" data-ic="mountain" style="font-size:50px;margin:0"></i>quali difficoltà ha incontrato</div>
+        <div class="tile tint row" style="gap:12px;flex-wrap:nowrap"><i class="ic" data-ic="bullseye" style="font-size:50px;margin:0"></i>quali obiettivi ha raggiunto</div>
+        <div class="tile tint row" style="gap:12px;flex-wrap:nowrap"><i class="ic" data-ic="seedling" style="font-size:50px;margin:0"></i>come è cambiato nel tempo</div>
+      </div>
+    </div>
+    <div class="panel" style="background:var(--c);color:#fff">
+      <i class="ic" data-ic="school" style="font-size:100px"></i>
+      <h3 style="margin-top:10px">Per noi, future insegnanti</h3>
+      <p class="txt" style="font-size:26px">Compilandolo sviluppiamo la <b>riflessione critica</b>, riconosciamo i progressi e ci prendiamo la responsabilità del nostro apprendimento.</p>
+      <p class="txt" style="font-size:26px;margin:0">Può accompagnare il <b>tirocinio</b> e collegare <b>teoria, pratica e riflessione personale</b>.</p>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-sec="intro">
+  <div class="eyebrow">Secondo tema</div>
+  <h2>Il feedback, una visione nuova</h2>
+  <div class="versus" style="margin-bottom:26px">
+    <div class="vs old row" style="gap:22px;flex-wrap:nowrap"><i class="ic" data-ic="hundred-points" style="font-size:96px;flex:none"></i><div><h3>Non solo…</h3><p class="txt" style="margin:0;font-size:26px">un voto, una correzione o un commento del docente alla fine del compito</p></div></div>
+    <div class="vs row" style="gap:22px;flex-wrap:nowrap;background:color-mix(in srgb,var(--c) 12%,white)"><i class="ic" data-ic="repeat-button" style="font-size:96px;flex:none"></i><div><h3>…ma un processo</h3><p class="txt" style="margin:0;font-size:26px"><b>continuo, dialogico e ricorsivo</b> che accompagna l'apprendimento e favorisce l'<b>autoregolazione</b></p></div></div>
+  </div>
+  <h3>Le tecnologie lo sostengono in tre direzioni</h3>
+  <div class="tiles t3 compact">
+    <div class="tile row" style="gap:16px;flex-wrap:nowrap"><i class="ic" data-ic="stopwatch" style="font-size:64px;margin:0"></i><span>più <b>tempestivo</b></span></div>
+    <div class="tile row" style="gap:16px;flex-wrap:nowrap"><i class="ic" data-ic="headphone" style="font-size:64px;margin:0"></i><span>modi migliori per <b>darlo</b></span></div>
+    <div class="tile row" style="gap:16px;flex-wrap:nowrap"><i class="ic" data-ic="spiral-calendar" style="font-size:64px;margin:0"></i><span><b>memoria</b> del percorso nel tempo</span></div>
+  </div>
+</section>
+
+<section class="slide" data-sec="intro">
+  <div class="eyebrow">Gli strumenti che vedremo</div>
+  <h2>Dal quiz in tempo reale al feedback tra pari</h2>
+  <div class="tiles t4">
+    <div class="tile"><i class="ic" data-ic="mobile-phone"></i><h3>Risponditori automatici</h3>Kahoot, Socrative, Mentimeter, Google Moduli: risposte <b>in tempo reale</b> per orientare la lezione</div>
+    <div class="tile"><i class="ic" data-ic="memo"></i><h3>One Minute Paper</h3>poche domande su concetti, dubbi e cosa approfondire: favorisce la <b>metacognizione</b></div>
+    <div class="tile"><i class="ic" data-ic="video-camera"></i><h3>Audio, video, screencast</h3>una comunicazione più <b>personale, chiara e dettagliata</b></div>
+    <div class="tile"><i class="ic" data-ic="people-hugging"></i><h3>Peer feedback</h3>imparare a ricevere e a <b>dare</b> suggerimenti costruttivi, rispettosi e utili</div>
+  </div>
+</section>
+
+<section class="slide" data-sec="intro">
+  <div class="eyebrow">Infine</div>
+  <h2>Open badge e blockchain</h2>
+  <div class="cols c2e" style="gap:30px">
+    <div class="tile" style="padding:36px"><i class="ic" data-ic="sports-medal" style="font-size:130px"></i><h3 style="font-size:40px">Open badge</h3><p class="txt" style="margin:0">Riconoscimenti digitali che documentano competenze acquisite <b>anche fuori dai percorsi scolastici formali</b>.</p></div>
+    <div class="tile" style="padding:36px"><i class="ic" data-ic="link" style="font-size:130px"></i><h3 style="font-size:40px">Blockchain</h3><p class="txt" style="margin:0">Rende le credenziali più <b>sicure</b>, <b>verificabili</b> e <b>trasferibili</b>.</p></div>
+  </div>
+</section>
+
+<section class="slide" data-sec="intro">
+  <div class="eyebrow">Nel complesso</div>
+  <h2 style="font-size:70px;max-width:1300px">La tecnologia non è solo uno strumento tecnico: è una <span class="mark">risorsa educativa</span></h2>
+  <div class="tiles t4" style="margin-top:10px">
+    <div class="tile tint" style="text-align:center"><i class="ic" data-ic="thinking-face"></i><h3>Riflettere</h3></div>
+    <div class="tile tint" style="text-align:center"><i class="ic" data-ic="mirror"></i><h3>Valutare se stessi</h3></div>
+    <div class="tile tint" style="text-align:center"><i class="ic" data-ic="chart-increasing"></i><h3>Migliorare il proprio lavoro</h3></div>
+    <div class="tile tint" style="text-align:center"><i class="ic" data-ic="seedling"></i><h3>Costruire un'identità consapevole</h3></div>
+  </div>
+  <div class="row" style="margin-top:30px;gap:20px"><p class="lead" style="margin:0;font-size:32px">Nei prossimi interventi approfondiamo ogni aspetto.</p><button class="btn" data-home="1">● Torna all'indice</button></div>
+</section>
+
+<!-- ================= 16.1 ================= -->
+<section class="slide divider" data-sec="identita">
+  <div class="big-n">16.1</div>
+  <div style="position:relative;margin-top:120px">
+    <div class="eyebrow">Paragrafo 16.1</div>
+    <h1>Tecnologie e costruzione dell'identità</h1>
+    <div class="who-big"><span class="av" data-av="B">B</span><span data-show="B"></span></div>
+  </div>
+  <div class="divider-art"><div class="in"><i class="ic" data-ic="open-file-folder"></i></div>
+    <div class="sat" style="left:-20px;top:30px"><i class="ic" data-ic="video-camera"></i></div><div class="sat" style="right:-20px;top:90px;animation-delay:-2s"><i class="ic" data-ic="studio-microphone"></i></div><div class="sat" style="left:30px;bottom:-10px;animation-delay:-4s"><i class="ic" data-ic="writing-hand"></i></div></div>
+</section>
+
+<section class="slide" data-sec="identita">
+  <div class="cols c2">
+    <div>
+      <div class="eyebrow">Che cos'è</div>
+      <h2>L'e-portfolio</h2>
+      <p class="lead">Un <b>artefatto personale</b>: una raccolta di <b>materiali significativi</b> e delle <b>riflessioni</b> di chi lo compila.</p>
+      <p class="txt">Serve a documentare il proprio sviluppo personale e professionale e a raccogliere le «prove» dell'apprendimento, in esperienze di <b>valutazione autentica</b>.</p>
+      <p class="cite">Rossi e Giannandrea, 2006</p>
+    </div>
+    <div class="scene"><div class="blob"></div><div class="blob2"></div><div class="main"><i class="ic" data-ic="open-file-folder"></i></div>
+      <div class="sat p1"><i class="ic" data-ic="camera-with-flash"></i></div><div class="sat p2"><i class="ic" data-ic="studio-microphone"></i></div><div class="sat p3"><i class="ic" data-ic="page-facing-up"></i></div><div class="sat p4"><i class="ic" data-ic="thought-balloon"></i></div></div>
+  </div>
+</section>
+
+<section class="slide" data-sec="identita">
+  <div class="eyebrow">Perché digitale</div>
+  <h2>Cosa aggiunge il digitale al portfolio di carta</h2>
+  <div class="tiles t4" style="margin-top:34px">
+    <div class="tile tint"><i class="ic" data-ic="film-frames"></i><h3>Audio e video</h3>non solo documenti cartacei</div>
+    <div class="tile tint"><i class="ic" data-ic="linked-paperclips"></i><h3>Aggregare e commentare</h3>materiali diversi in un unico spazio</div>
+    <div class="tile tint"><i class="ic" data-ic="mobile-phone"></i><h3>Portabilità e condivisione</h3>sempre con sé, facile da mostrare</div>
+    <div class="tile tint"><i class="ic" data-ic="speaking-head"></i><h3>La voce dello studente</h3>le sue visioni personali, non solo la competenza <span class="cite">(Barrett, 2005)</span></div>
+  </div>
+</section>
+
+<section class="slide" data-sec="identita">
+  <div class="cols c2e" style="align-items:start">
+    <div>
+      <div class="eyebrow">A cosa serve</div>
+      <h2>Usi diversi, uno stesso strumento</h2>
+      <div class="steps">
+        <div class="step"><i class="ic" data-ic="books"></i>Verificare come è stata compresa una <b>disciplina</b></div>
+        <div class="step"><i class="ic" data-ic="red-heart"></i>Rilevare <b>interesse e motivazione</b></div>
+        <div class="step"><i class="ic" data-ic="chart-increasing"></i>Capire come cresce nel tempo la <b>consapevolezza professionale</b></div>
+      </div>
+    </div>
+    <div class="panel" style="margin-top:20px">
+      <div class="row" style="gap:16px"><i class="ic" data-ic="school" style="font-size:90px"></i><h3 style="margin:0">Da noi, a Scienze della Formazione Primaria</h3></div>
+      <div class="tl"><div class="dot">1°</div><div class="seg"></div><div class="dot">2°</div><div class="seg"></div><div class="dot">3°</div><div class="seg"></div><div class="dot">4°</div><div class="seg"></div><div class="dot">5°</div></div>
+      <p class="txt" style="font-size:24px">In alcune sedi l'e-portfolio accompagna <b>tutti e cinque gli anni</b>: raccoglie i materiali più significativi di <b>laboratori e tirocinio</b> e le riflessioni sul percorso di professionalizzazione.</p>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-sec="identita">
+  <div class="eyebrow">Cosa dice la ricerca</div>
+  <h2>Costruire l'e-portfolio cambia il futuro docente</h2>
+  <div class="tiles t3" style="margin-top:30px">
+    <div class="tile"><i class="ic" data-ic="hammer-and-wrench"></i><h3>De-costruire e ri-costruire</h3>l'esperienza in modo personale<p class="cite" style="margin-top:10px">Giannandrea, Magnoler e Scagnetti, 2021</p></div>
+    <div class="tile"><i class="ic" data-ic="man-teacher"></i><h3>Riflessività in classe</h3>l'atteggiamento riflessivo influenza l'azione didattica dei futuri docenti<p class="cite" style="margin-top:10px">La Rocca, 2020</p></div>
+    <div class="tile"><i class="ic" data-ic="key"></i><h3>Senso di proprietà</h3>più consapevolezza e responsabilità verso il proprio percorso<p class="cite" style="margin-top:10px">Gibson e Barrett, 2003; Barrett, 2005; Shroff et al., 2014</p></div>
+  </div>
+</section>
+
+<section class="slide" data-sec="identita">
+  <div class="cols c2">
+    <div>
+      <div class="eyebrow">L'e-portfolio per valutare</div>
+      <h2>Valutare ciò che lo studente sa fare</h2>
+      <div class="steps">
+        <div class="step"><i class="ic" data-ic="clipboard"></i>Un <b>profilo professionale</b> di riferimento</div>
+        <div class="step"><i class="ic" data-ic="magnifying-glass-tilted-left"></i>Si valutano la <b>coerenza</b> tra competenza ed evidenze e la <b>profondità delle riflessioni</b></div>
+        <div class="step"><i class="ic" data-ic="glowing-star"></i>I materiali li sceglie lo studente: emergono le <b>competenze</b>, non le mancanze</div>
+      </div>
+    </div>
+    <div class="scene" style="width:480px;height:480px"><div class="blob"></div><div class="main" style="font-size:230px"><i class="ic" data-ic="bullseye"></i></div><div class="sat p2"><i class="ic" data-ic="check-mark-button"></i></div><div class="sat p3"><i class="ic" data-ic="student"></i></div></div>
+  </div>
+</section>
+
+<section class="slide" data-sec="identita">
+  <div class="eyebrow">Progetto Mosep · More Self Esteem with ePortfolios</div>
+  <h2>L'e-portfolio rinforza l'autoefficacia</h2>
+  <div class="cols c2e">
+    <div class="versus" style="grid-template-columns:1fr 1fr">
+      <div class="vs old" style="text-align:center"><i class="ic" data-ic="raised-hand" style="font-size:110px"></i><h3>Coinvolgimento</h3><p class="lead" style="font-size:60px;margin:0">=</p><p class="txt" style="font-size:22px">nessun cambiamento significativo</p></div>
+      <div class="vs" style="text-align:center;background:color-mix(in srgb,var(--c) 14%,white)"><i class="ic" data-ic="flexed-biceps" style="font-size:110px"></i><h3>Autoefficacia</h3><p class="lead" style="font-size:60px;margin:0;color:var(--c)">↑</p><p class="txt" style="font-size:22px">miglioramento significativo, insieme ai voti finali</p></div>
+    </div>
+    <div>
+      <div class="panel">
+        <h3>Autoefficacia</h3>
+        <p class="txt">La convinzione nelle proprie capacità di organizzare e realizzare le azioni che portano all'apprendimento.</p>
+        <p class="cite">Bandura, 1977</p>
+      </div>
+      <p class="lead" style="margin-top:24px;font-size:32px">Il segreto? <b>Documentare</b> le proprie prestazioni e <b>rifletterci sopra</b>.</p>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-sec="identita">
+  <div class="act-pill"><i class="ic" data-ic="raising-hands"></i>Tocca a voi</div>
+  <h2>Sapete indicare con precisione i vostri punti di forza e di debolezza prima di una verifica?</h2>
+  <div class="panel" data-act="forza" style="margin-top:20px">
+    <div class="poll" data-poll="forza">
+      <div class="prow"><span><i class="ic" data-ic="flexed-biceps" style="font-size:44px"></i> Sì, con precisione</span><div class="bar"><i></i></div><div class="cnt"><button aria-label="meno">−</button><output>0</output><button aria-label="più">+</button></div></div>
+      <div class="prow"><span><i class="ic" data-ic="thinking-face" style="font-size:44px"></i> Solo in parte / no</span><div class="bar"><i></i></div><div class="cnt"><button aria-label="meno">−</button><output>0</output><button aria-label="più">+</button></div></div>
+    </div>
+  </div>
+  <p class="lead" style="margin-top:26px;font-size:30px">L'e-portfolio serve proprio a questo: rendere visibili i propri punti di forza e di debolezza.</p>
+</section>
+
+<section class="slide" data-sec="identita">
+  <div class="act-pill"><i class="ic" data-ic="raising-hands"></i>Tocca a voi</div>
+  <h2 style="font-size:52px">Costruiamo insieme un e-portfolio di tirocinio</h2>
+  <div class="cols c2e" style="align-items:start;gap:30px">
+    <div class="panel" data-act="portfolio">
+      <p class="small" style="margin-bottom:10px">Toccate i materiali che la classe propone</p>
+      <div class="chips" id="pf-items">
+        <button class="chip" data-k="m"><i class="ic" data-ic="page-facing-up"></i>Relazione di tirocinio</button>
+        <button class="chip" data-k="m"><i class="ic" data-ic="video-camera"></i>Video di un laboratorio</button>
+        <button class="chip" data-k="m"><i class="ic" data-ic="framed-picture"></i>Foto di un cartellone</button>
+        <button class="chip" data-k="m"><i class="ic" data-ic="studio-microphone"></i>Audio di una lettura</button>
+        <button class="chip" data-k="m"><i class="ic" data-ic="spiral-calendar"></i>Progettazione didattica</button>
+        <button class="chip" data-k="r"><i class="ic" data-ic="writing-hand"></i>Riflessione: cosa ho imparato</button>
+        <button class="chip" data-k="r"><i class="ic" data-ic="bullseye"></i>Autovalutazione delle competenze</button>
+      </div>
+      <div class="live-only" style="margin-top:14px"><p class="small" style="margin-bottom:6px">Proposte arrivate dai telefoni</p><div class="chips" id="pf-phone"></div></div>
+    </div>
+    <div>
+      <div class="row" style="gap:12px;margin-bottom:10px"><i class="ic" data-ic="open-file-folder" style="font-size:70px"></i><h3 style="margin:0">Il mio e-portfolio</h3></div>
+      <div class="folder" id="pf-folder" aria-live="polite"></div>
+      <div class="status" id="pf-status">Ancora vuoto.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 16.2 PRIMA PARTE ================= -->
+<section class="slide divider" data-sec="tempestivita">
+  <div class="big-n">16.2</div>
+  <div style="position:relative;margin-top:120px">
+    <div class="eyebrow">Paragrafo 16.2 · prima parte</div>
+    <h1>Feedback «learning-centred» e tempestività</h1>
+    <div class="who-big"><span class="av" data-av="C">C</span><span data-show="C"></span></div>
+  </div>
+  <div class="divider-art"><div class="in"><i class="ic" data-ic="stopwatch"></i></div>
+    <div class="sat" style="left:-20px;top:30px"><i class="ic" data-ic="mobile-phone"></i></div><div class="sat" style="right:-20px;top:90px;animation-delay:-2s"><i class="ic" data-ic="speech-balloon"></i></div><div class="sat" style="left:30px;bottom:-10px;animation-delay:-4s"><i class="ic" data-ic="bar-chart"></i></div></div>
+</section>
+
+<section class="slide" data-sec="tempestivita">
+  <div class="eyebrow">Assessment for Learning e as Learning</div>
+  <h2>Quando valutare serve a migliorare, il feedback diventa essenziale</h2>
+  <div class="tiles t4" style="margin-top:20px">
+    <div class="tile tint"><i class="ic" data-ic="gear"></i><h3>Regola</h3>il processo di apprendimento</div>
+    <div class="tile tint"><i class="ic" data-ic="handshake"></i><h3>Allinea</h3>obiettivi, esiti e prospettive</div>
+    <div class="tile tint"><i class="ic" data-ic="left-speech-bubble"></i><h3>Rinegozia</h3>i significati</div>
+    <div class="tile tint"><i class="ic" data-ic="rocket"></i><h3>Rilancia</h3>continuamente l'apprendimento</div>
+  </div>
+  <p class="lead" style="margin-top:28px;font-size:32px">Un processo <b>ricorsivo, ciclico, generativo e trasformativo</b> che mette in dialogo studente e docente.</p>
+  <p class="cite">Giannandrea, 2021 · Hadji, 2023 · Grion e Serbati, 2019 · Rivoltella, 2021 · Laici, 2021</p>
+</section>
+
+<section class="slide" data-sec="tempestivita">
+  <div class="eyebrow">La svolta</div>
+  <h2>Dal «telling» all'«appreciating»</h2>
+  <div class="versus">
+    <div class="vs old">
+      <h3>Feedback as telling</h3>
+      <div class="flow"><i class="ic" data-ic="man-teacher"></i><span class="arrow">→</span><i class="ic" data-ic="student"></i></div>
+      <p class="txt" style="font-size:24px">Un commento a senso unico: il docente corregge, lo studente riceve.</p>
+      <p class="cite">Sadler, 2010</p>
+    </div>
+    <div class="vs new">
+      <h3>Feedback as appreciating</h3>
+      <div class="flow"><i class="ic" data-ic="man-teacher"></i><span class="arrow">⇄</span><i class="ic" data-ic="student"></i></div>
+      <p class="txt" style="font-size:24px">Gli studenti <b>cercano</b> il feedback, gli danno un <b>senso</b> e lo <b>usano</b> per migliorare: diventano più autonomi e autoregolati.</p>
+      <p class="cite">Winstone e Carless, 2019 · Carless e Boud, 2018 · Grion e Serbati, 2019</p>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-sec="tempestivita">
+  <div class="eyebrow">Come aiutano le tecnologie</div>
+  <h2>Tre aspetti del feedback</h2>
+  <div class="tiles t3" style="margin-top:30px">
+    <div class="tile solid"><i class="ic" data-ic="stopwatch"></i><h3>1. Tempestività</h3>feedback nel momento giusto<p style="margin-top:12px;font-weight:700">← ora</p></div>
+    <div class="tile"><i class="ic" data-ic="headphone"></i><h3>2. Come si dà e si usa</h3>audio, video, screencast, feedback tra pari</div>
+    <div class="tile"><i class="ic" data-ic="spiral-calendar"></i><h3>3. Visione nel tempo</h3>un percorso longitudinale e riflessivo</div>
+  </div>
+  <p class="cite" style="margin-top:20px">Winstone e Carless, 2019</p>
+</section>
+
+<section class="slide" data-sec="tempestivita">
+  <div class="cols c2">
+    <div>
+      <div class="eyebrow">Tempestività</div>
+      <h2>Durante il percorso, non alla fine</h2>
+      <p class="lead">Il feedback utile arriva <b>in itinere</b>, con molte occasioni lungo il percorso.</p>
+      <p class="txt">Le tecnologie riducono il tempo tra il compito e il feedback: docente e studenti si allineano e il docente regola la lezione <b>mentre accade</b>.</p>
+      <p class="cite">Carless, 2019 · Laurillard, 2012 · Carenzio e Ferrari, 2021</p>
+    </div>
+    <div class="scene"><div class="blob"></div><div class="blob2"></div><div class="main"><i class="ic" data-ic="stopwatch"></i></div><div class="sat p1"><i class="ic" data-ic="high-voltage"></i></div><div class="sat p4"><i class="ic" data-ic="speech-balloon"></i></div></div>
+  </div>
+</section>
+
+<section class="slide" data-sec="tempestivita">
+  <div class="eyebrow">Risponditori automatici</div>
+  <h2>Quiz dal telefono, risultati in tempo reale</h2>
+  <div class="tiles t5" style="margin-top:10px">
+    <div class="tile tint" style="text-align:center"><i class="ic" data-ic="game-die"></i><h3>Kahoot</h3></div>
+    <div class="tile tint" style="text-align:center"><i class="ic" data-ic="check-mark-button"></i><h3>Socrative</h3></div>
+    <div class="tile tint" style="text-align:center"><i class="ic" data-ic="bar-chart"></i><h3>Mentimeter</h3></div>
+    <div class="tile tint" style="text-align:center"><i class="ic" data-ic="clipboard"></i><h3>Google Moduli</h3></div>
+    <div class="tile tint" style="text-align:center"><i class="ic" data-ic="raising-hands"></i><h3>Wooclap</h3></div>
+  </div>
+  <div class="cols c2e" style="margin-top:26px;gap:30px">
+    <p class="txt">Correggono in automatico, tabulano e mostrano le risposte <b>in tempo reale</b>, con suggerimenti per il singolo <span class="cite">(Giannandrea, 2019)</span>. I risultati proiettati diventano spunto di <b>discussione</b>.</p>
+    <div class="panel row" style="gap:20px"><i class="ic" data-ic="mobile-phone" style="font-size:100px"></i><div><h3 style="margin:0">BYOD</h3><p class="txt" style="margin:0;font-size:23px">Bring Your Own Device: ognuno usa il proprio dispositivo, senza interrompere la lezione.</p></div></div>
+  </div>
+</section>
+
+<section class="slide" data-sec="tempestivita">
+  <div class="cols c2e" style="align-items:start">
+    <div>
+      <div class="eyebrow">Bonaiuti, 2012</div>
+      <h2>I 3 passaggi dei risponditori</h2>
+      <div class="steps" id="bon">
+        <div class="step"><span class="num">1</span><i class="ic" data-ic="man-teacher"></i><span>Il docente formula un quesito, <b>aperto o chiuso</b></span></div>
+        <div class="step"><span class="num">2</span><i class="ic" data-ic="mobile-phone"></i><span>Lo studente risponde dal suo dispositivo, <b>anonimo</b> o con un identificativo</span></div>
+        <div class="step"><span class="num">3</span><i class="ic" data-ic="television"></i><span>Le risposte compaiono <b>subito</b> alla LIM o al proiettore</span></div>
+      </div>
+    </div>
+    <div>
+      <h3 style="margin-top:96px">A cosa servono</h3>
+      <div class="tiles t2" style="gap:14px">
+        <div class="tile" style="padding:16px 18px;font-size:21px"><i class="ic" data-ic="magnifying-glass-tilted-left" style="font-size:44px;margin:0 0 6px"></i><br>Far emergere preconoscenze ed errori</div>
+        <div class="tile" style="padding:16px 18px;font-size:21px"><i class="ic" data-ic="eyes" style="font-size:44px;margin:0 0 6px"></i><br>Controllare la comprensione</div>
+        <div class="tile" style="padding:16px 18px;font-size:21px"><i class="ic" data-ic="raising-hands" style="font-size:44px;margin:0 0 6px"></i><br>Far partecipare anche i più timidi</div>
+        <div class="tile" style="padding:16px 18px;font-size:21px"><i class="ic" data-ic="bell" style="font-size:44px;margin:0 0 6px"></i><br>Tenere viva l'attenzione</div>
+        <div class="tile" style="padding:16px 18px;font-size:21px"><i class="ic" data-ic="compass" style="font-size:44px;margin:0 0 6px"></i><br>Decidere se andare avanti o riprendere</div>
+        <div class="tile" style="padding:16px 18px;font-size:21px"><i class="ic" data-ic="left-speech-bubble" style="font-size:44px;margin:0 0 6px"></i><br>Usare le risposte per discutere</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-sec="tempestivita">
+  <div class="row" style="justify-content:space-between"><div class="act-pill"><i class="ic" data-ic="mobile-phone"></i>Proviamo i 3 passaggi</div><b id="qz-n" style="font-size:22px">Domanda 1 di 3</b></div>
+  <div class="panel" data-act="quiz" id="quiz-card">
+    <div class="q" id="qz-q"></div>
+    <div id="qz-opts"></div>
+    <div class="row" style="margin-top:6px"><button class="btn" id="qz-show">Mostra la risposta</button><button class="btn ghost" id="qz-next">Domanda successiva</button><span class="small">Contate le mani con +<span class="live-only"> o lasciate rispondere i telefoni</span></span></div>
+    <div class="note-ok" id="qz-note"></div>
+  </div>
+</section>
+
+<section class="slide" data-sec="tempestivita">
+  <div class="cols c2">
+    <div>
+      <div class="eyebrow">Angelo e Cross, 1993</div>
+      <h2>Il One Minute Paper</h2>
+      <p class="lead">Poche domande, quasi mai più di tre, a <b>fine lezione</b>, anche con Google Moduli o Mentimeter.</p>
+      <div class="chips" style="margin:6px 0 20px"><span class="chip static"><i class="ic" data-ic="light-bulb"></i>Concetti più importanti</span><span class="chip static"><i class="ic" data-ic="sparkles"></i>Cosa ha interessato di più</span><span class="chip static"><i class="ic" data-ic="thinking-face"></i>Dubbi</span></div>
+      <p class="txt">Abilita il <b>feedback dialogico</b> e l'autoregolazione e attiva un processo <b>metacognitivo</b>: prima ricordo, poi rifletto e scelgo.</p>
+      <p class="cite">Nicol e MacFarlane-Dick, 2006 · Laici, 2021</p>
+    </div>
+    <div class="scene"><div class="blob"></div><div class="blob2"></div><div class="main"><i class="ic" data-ic="memo"></i></div><div class="sat p2"><i class="ic" data-ic="alarm-clock"></i></div><div class="sat p3"><i class="ic" data-ic="brain"></i></div></div>
+  </div>
+</section>
+
+<!-- ================= 16.2 SECONDA PARTE ================= -->
+<section class="slide divider" data-sec="multimediale">
+  <div class="big-n">16.2</div>
+  <div style="position:relative;margin-top:120px">
+    <div class="eyebrow">Paragrafo 16.2 · seconda parte</div>
+    <h1>Feedback multimediale, tra pari e nel tempo</h1>
+    <div class="who-big"><span class="av" data-av="D">D</span><span data-show="D"></span></div>
+  </div>
+  <div class="divider-art"><div class="in"><i class="ic" data-ic="headphone"></i></div>
+    <div class="sat" style="left:-20px;top:30px"><i class="ic" data-ic="video-camera"></i></div><div class="sat" style="right:-20px;top:90px;animation-delay:-2s"><i class="ic" data-ic="people-hugging"></i></div><div class="sat" style="left:30px;bottom:-10px;animation-delay:-4s"><i class="ic" data-ic="ladder"></i></div></div>
+</section>
+
+<section class="slide" data-sec="multimediale">
+  <div class="eyebrow">Secondo aspetto · Garavaglia e Petti, 2022</div>
+  <h2>Un feedback che si ascolta e si guarda</h2>
+  <div class="tiles t3">
+    <div class="tile"><i class="ic" data-ic="headphone"></i><h3>Audio</h3>Più <b>chiaro</b>, più <b>personale</b>, più facile da capire e <b>meno intrusivo</b> di un colloquio faccia a faccia.<p class="cite" style="margin-top:10px">Hennessy e Forrester, 2014 · Merry e Orsmond, 2008</p></div>
+    <div class="tile"><i class="ic" data-ic="video-camera"></i><h3>Video</h3>Aumenta la <b>presenza sociale</b> del docente e cura gli aspetti relazionali ed emotivi: la <b>feedback literacy</b>.<p class="cite" style="margin-top:10px">Mahoney et al., 2019 · Carless e Boud, 2018</p></div>
+    <div class="tile"><i class="ic" data-ic="desktop-computer"></i><h3>Screencast</h3>Commenta il lavoro <b>punto per punto</b> e mostra l'impegno del docente: molto apprezzato.<p class="cite" style="margin-top:10px">Dawson et al., 2018 · Knauf, 2016</p></div>
+  </div>
+</section>
+
+<section class="slide" data-sec="multimediale">
+  <div class="cols c2e" style="align-items:start">
+    <div>
+      <div class="eyebrow">Gli strumenti</div>
+      <h2>Camtasia, Jing, Mote, Kaizena</h2>
+      <p class="lead">App, tool web o estensioni del browser per feedback <b>dettagliati e personalizzati</b>.</p>
+      <p class="txt">Per il docente sono anche <b>più veloci</b> da produrre di un feedback scritto <span class="cite">(Woodcock, 2017)</span>.</p>
+    </div>
+    <div>
+      <h3 style="margin-top:20px">Le avvertenze <span class="cite">(Dawson et al., 2018)</span></h3>
+      <div class="tiles t2" style="gap:16px">
+        <div class="tile tint"><i class="ic" data-ic="musical-notes"></i><h3>mp3</h3>per l'audio</div>
+        <div class="tile tint"><i class="ic" data-ic="clapper-board"></i><h3>mp4</h3>per il video</div>
+        <div class="tile tint"><i class="ic" data-ic="hourglass-not-done"></i><h3>3–5 minuti</h3>al massimo</div>
+        <div class="tile tint"><i class="ic" data-ic="package"></i><h3>Condivisibili</h3>per email o online</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-sec="multimediale">
+  <div class="act-pill"><i class="ic" data-ic="headphone"></i>Tocca a voi</div>
+  <h2 style="font-size:54px">Scritto o vocale: quale vi arriva meglio?</h2>
+  <div class="cols c2e" style="align-items:start;gap:30px">
+    <div class="panel">
+      <p class="txt" style="background:#fff3c2;border-radius:16px;padding:18px 20px;font-size:24px" id="fb-text">«Il tuo progetto sul ciclo dell'acqua è ben organizzato e le immagini aiutano molto. Prova però a spiegare meglio il passaggio dall'evaporazione alla condensazione: un piccolo esperimento in classe renderebbe il concetto più concreto per i bambini.»</p>
+      <div class="row"><button class="btn" id="tts">▶ Ascolta come vocale</button><label class="btn ghost" for="aud-file">Carica il vostro audio</label><input type="file" id="aud-file" accept="audio/*" hidden></div>
+      <audio id="aud" controls style="width:100%;display:none;margin-top:12px"></audio>
+      <p class="small" id="tts-msg" style="margin-top:8px"></p>
+    </div>
+    <div class="panel" data-act="voce">
+      <div class="poll" data-poll="voce">
+        <div class="prow" style="grid-template-columns:200px 1fr 190px"><span><i class="ic" data-ic="memo" style="font-size:44px"></i> Scritto</span><div class="bar"><i></i></div><div class="cnt"><button aria-label="meno">−</button><output>0</output><button aria-label="più">+</button></div></div>
+        <div class="prow" style="grid-template-columns:200px 1fr 190px"><span><i class="ic" data-ic="headphone" style="font-size:44px"></i> Vocale</span><div class="bar"><i></i></div><div class="cnt"><button aria-label="meno">−</button><output>0</output><button aria-label="più">+</button></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-sec="multimediale">
+  <div class="cols c2">
+    <div>
+      <div class="eyebrow">Peer feedback</div>
+      <h2>Il feedback tra compagni</h2>
+      <p class="lead">Il feedback può avvenire <b>tra studenti</b>, anche senza il docente.</p>
+      <div class="chips" style="margin:8px 0 22px"><span class="chip static">Blog</span><span class="chip static">Forum</span><span class="chip static">Wiki</span><span class="chip static">Google Drive</span><span class="chip static">PeerGrade</span><span class="chip static">WebPA</span></div>
+      <p class="txt">Si diventa esperti <b>a poco a poco</b>, in un <b>clima di fiducia</b>. E dopo si riflette sul feedback dato, per diventarne consapevoli.</p>
+      <p class="cite">Nicol et al., 2014 · Grion e Serbati, 2019 · Laici, 2022 · Laici e Pentucci, 2023</p>
+    </div>
+    <div class="scene"><div class="blob"></div><div class="blob2"></div><div class="main"><i class="ic" data-ic="people-hugging"></i></div><div class="sat p1"><i class="ic" data-ic="speech-balloon"></i></div><div class="sat p2"><i class="ic" data-ic="handshake"></i></div><div class="sat p4"><i class="ic" data-ic="laptop"></i></div></div>
+  </div>
+</section>
+
+<section class="slide" data-sec="multimediale">
+  <div class="row" style="justify-content:space-between;align-items:flex-start">
+    <div><div class="act-pill"><i class="ic" data-ic="ladder"></i>Tocca a voi · Ladder of Feedback</div><h2 style="font-size:46px;margin-bottom:10px">Commentiamo un lavoro salendo 4 gradini</h2></div>
+    <p class="cite">Wilson et al., 2005 · Perkins, 2003</p>
+  </div>
+  <div class="panel" data-act="ladder" style="padding:20px 24px">
+    <p class="txt" style="font-size:22px;margin-bottom:12px"><i class="ic" data-ic="pizza" style="font-size:40px"></i> <b>Il lavoro:</b> «Per spiegare le frazioni in seconda primaria divido una pizza di cartone in 4 parti e chiedo ai bambini quante fette restano se ne mangio una.»</p>
+    <div class="ladder" id="ladder"></div>
+  </div>
+</section>
+
+<section class="slide" data-sec="multimediale">
+  <div class="eyebrow">Terzo aspetto</div>
+  <h2>Il feedback è un percorso, non un episodio</h2>
+  <div class="cols c2e" style="align-items:start">
+    <div>
+      <div class="tl"><div class="dot"><i class="ic" data-ic="page-facing-up" style="font-size:44px"></i></div><div class="seg"></div><div class="dot"><i class="ic" data-ic="speech-balloon" style="font-size:44px"></i></div><div class="seg"></div><div class="dot"><i class="ic" data-ic="page-facing-up" style="font-size:44px"></i></div><div class="seg"></div><div class="dot"><i class="ic" data-ic="speech-balloon" style="font-size:44px"></i></div><div class="seg"></div><div class="dot"><i class="ic" data-ic="seedling" style="font-size:44px"></i></div></div>
+      <p class="txt">Le tecnologie <b>conservano la memoria</b> di compiti e feedback: si vedono i collegamenti nel tempo e si costruiscono reti di significato.</p>
+      <div class="chips"><span class="chip static"><i class="ic" data-ic="notebook"></i>Blog e wiki come diari di feedback</span><span class="chip static"><i class="ic" data-ic="open-file-folder"></i>E-portfolio</span></div>
+    </div>
+    <div class="panel">
+      <h3>Interactive Coversheet Question</h3>
+      <p class="cite">Winstone e Carless, 2019, p. 108</p>
+      <p class="txt" style="font-size:23px">Una scheda allegata al compito: lo studente si <b>autovaluta</b> e chiede un feedback su un <b>punto preciso</b>.</p>
+      <div class="diploma" style="border:2px solid var(--line);background:#fbfcff">
+        <label for="cs1" style="grid-template-columns:1fr;font-size:20px">Come valuto il mio lavoro?<input id="cs1" value="Buona la struttura, debole la conclusione"></label>
+        <label for="cs2" style="grid-template-columns:1fr;font-size:20px">Su cosa vorrei un feedback?<input id="cs2" value="La conclusione è abbastanza chiara?"></label>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 16.3 ================= -->
+<section class="slide divider" data-sec="badge">
+  <div class="big-n">16.3</div>
+  <div style="position:relative;margin-top:120px">
+    <div class="eyebrow">Paragrafo 16.3</div>
+    <h1>Open Badge, Blockchain e Blockcert</h1>
+    <div class="who-big"><span class="av" data-av="E">E</span><span data-show="E"></span></div>
+  </div>
+  <div class="divider-art"><div class="in"><i class="ic" data-ic="sports-medal"></i></div>
+    <div class="sat" style="left:-20px;top:30px"><i class="ic" data-ic="link"></i></div><div class="sat" style="right:-20px;top:90px;animation-delay:-2s"><i class="ic" data-ic="locked"></i></div><div class="sat" style="left:30px;bottom:-10px;animation-delay:-4s"><i class="ic" data-ic="graduation-cap"></i></div></div>
+</section>
+
+<section class="slide" data-sec="badge">
+  <div class="cols c2">
+    <div>
+      <div class="eyebrow">Il problema</div>
+      <h2>Percorsi complessi e frammentati</h2>
+      <p class="lead">Un profilo professionale oggi mette insieme percorsi <b>formali</b>, esperienze di lavoro <b>frammentate</b>, competenze nate in contesti <b>non formali e informali</b>.</p>
+      <p class="txt">Documentarle e validarle diventa sempre più difficile. Le tecnologie offrono due risposte.</p>
+    </div>
+    <div class="scene"><div class="blob"></div><div class="blob2"></div><div class="main"><i class="ic" data-ic="puzzle-piece"></i></div><div class="sat p1"><i class="ic" data-ic="graduation-cap"></i></div><div class="sat p2"><i class="ic" data-ic="office-building"></i></div><div class="sat p3"><i class="ic" data-ic="globe-showing-europe-africa"></i></div><div class="sat p4"><i class="ic" data-ic="artist-palette"></i></div></div>
+  </div>
+</section>
+
+<section class="slide" data-sec="badge">
+  <div class="eyebrow">Open Badge · Fedeli e Giannandrea, 2015</div>
+  <h2>Una «medaglia digitale» che dice tutto di sé</h2>
+  <div class="cols c2e" style="align-items:start">
+    <div class="steps">
+      <div class="step"><i class="ic" data-ic="classical-building"></i><span><b>Chi</b> lo ha assegnato</span></div>
+      <div class="step"><i class="ic" data-ic="glowing-star"></i><span><b>In cosa consiste</b> la competenza</span></div>
+      <div class="step"><i class="ic" data-ic="clipboard"></i><span><b>Quali criteri</b> sono stati usati</span></div>
+    </div>
+    <div class="steps">
+      <div class="step"><i class="ic" data-ic="house"></i><span>Sta in uno <b>spazio digitale pubblico di proprietà dello studente</b>, indipendente dalle istituzioni</span></div>
+      <div class="step"><i class="ic" data-ic="globe-showing-europe-africa"></i><span><b>Standard aperto</b> della Mozilla Foundation, oggi gestito da IMS Global</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-sec="badge">
+  <div class="eyebrow">Perché è diverso dalla scuola tradizionale</div>
+  <h2>Le 4 caratteristiche degli Open Badge</h2>
+  <div class="tiles t4" style="margin-top:24px">
+    <div class="tile tint"><i class="ic" data-ic="herb"></i><h3>Vissuti</h3>riconosce competenze nate da <b>esperienze personali</b>, anche fuori dai percorsi formali</div>
+    <div class="tile tint"><i class="ic" data-ic="video-game"></i><h3>Gamification</h3>raccogliere badge è come un <b>gioco a punti</b>: motiva gli alunni</div>
+    <div class="tile tint"><i class="ic" data-ic="megaphone"></i><h3>Visibilità</h3>si mostrano sui <b>social</b> o nel <b>curricolo</b></div>
+    <div class="tile tint"><i class="ic" data-ic="open-book"></i><h3>Natura didattica</h3>criteri e attività spiegano il <b>legame</b> tra ciò che si è fatto e il traguardo</div>
+  </div>
+  <p class="lead" style="margin-top:26px;font-size:30px">Una forma di <b>valutazione alternativa</b>, attenta alle competenze.</p>
+</section>
+
+<section class="slide" data-sec="badge">
+  <div class="act-pill"><i class="ic" data-ic="sports-medal"></i>Tocca a voi · scegliete un badge</div>
+  <div class="panel" data-act="badge" style="margin-top:6px">
+    <div class="chips" id="badge-pick" style="margin-bottom:18px"></div>
+    <div class="badge-wrap">
+      <svg id="badge-svg" viewBox="0 0 200 220" role="img" aria-label="Open badge" style="width:300px;height:330px"></svg>
+      <div id="badge-info"></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-sec="badge">
+  <div class="eyebrow">Blockchain e Blockcert</div>
+  <h2>Un registro che nessuno può falsificare</h2>
+  <div class="chain">
+    <div class="block"><i class="ic" data-ic="scroll"></i>Diploma</div><i class="ic" data-ic="link"></i>
+    <div class="block"><i class="ic" data-ic="graduation-cap"></i>Laurea</div><i class="ic" data-ic="link"></i>
+    <div class="block"><i class="ic" data-ic="office-building"></i>Esperienza di lavoro</div><i class="ic" data-ic="link"></i>
+    <div class="block"><i class="ic" data-ic="sports-medal"></i>Open Badge</div>
+  </div>
+  <div class="tiles t3 compact">
+    <div class="tile"><i class="ic" data-ic="locked" style="font-size:56px"></i><h3>Blockchain</h3>registro digitale che traccia in modo <b>sicuro e anonimo</b> le transazioni tra utenti</div>
+    <div class="tile"><i class="ic" data-ic="key" style="font-size:56px"></i><h3>Blockcert (MIT)</h3>verifica un titolo <b>senza contattare</b> la scuola o l'università: basta la <b>prova crittografica</b></div>
+    <div class="tile"><i class="ic" data-ic="gem-stone" style="font-size:56px"></i><h3>Identità «olografica»</h3>meno burocrazia e <b>un unico spazio</b> per titoli formativi e lavorativi</div>
+  </div>
+</section>
+
+<section class="slide" data-sec="badge">
+  <div class="act-pill"><i class="ic" data-ic="locked"></i>Tocca a voi · provate a falsificare il diploma</div>
+  <div class="cols c2e" style="align-items:start;gap:34px">
+    <div class="diploma" id="dip">
+      <i class="ic seal" data-ic="sports-medal"></i>
+      <h3 style="font-size:28px">Diploma di Laurea</h3>
+      <label for="d-nome">Nome<input id="d-nome" value="Giulia Rossi"></label>
+      <label for="d-titolo">Titolo<input id="d-titolo" value="Scienze della Formazione Primaria"></label>
+      <label for="d-voto">Voto<input id="d-voto" value="104/110"></label>
+      <label for="d-ente">Rilasciato da<input id="d-ente" value="Università degli Studi di Bari"></label>
+      <button class="btn ghost" id="d-reset" style="justify-self:start">Ripristina l'originale</button>
+    </div>
+    <div>
+      <p style="font-weight:700;font-size:22px;margin:0 0 6px">Impronta registrata nella blockchain</p>
+      <div class="hash" id="h-orig">…</div>
+      <p style="font-weight:700;font-size:22px;margin:16px 0 6px">Impronta del diploma che vedete</p>
+      <div class="hash" id="h-now">…</div>
+      <div class="verdict ok" id="verdict" aria-live="polite">✓ Titolo valido</div>
+      <p class="small" style="margin-top:10px">Cambiate anche una sola lettera: l'impronta (SHA-256) cambia del tutto. Dimostrazione semplificata del principio di Blockcert.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CONCLUSIONI ================= -->
+<section class="slide divider" data-sec="intro" style="--c:#141b34">
+  <div class="big-n" data-end="1">40'</div>
+  <div style="position:relative;margin-top:120px">
+    <div class="eyebrow">Conclusioni</div>
+    <h1>Mettiamo insieme i pezzi</h1>
+    <div class="who-big"><span class="av" data-av="A">A</span><span data-show="A"></span></div>
+  </div>
+  <div class="divider-art"><div class="in"><i class="ic" data-ic="light-bulb"></i></div>
+    <div class="sat" style="left:-20px;top:30px"><i class="ic" data-ic="open-file-folder"></i></div><div class="sat" style="right:-20px;top:90px;animation-delay:-2s"><i class="ic" data-ic="speech-balloon"></i></div><div class="sat" style="left:30px;bottom:-10px;animation-delay:-4s"><i class="ic" data-ic="sports-medal"></i></div></div>
+</section>
+
+<section class="slide" data-sec="intro">
+  <div class="cols c2">
+    <div>
+      <div class="eyebrow">Il messaggio centrale</div>
+      <h2>La valutazione è un'occasione per imparare</h2>
+      <p class="lead">Non solo il momento finale che assegna un voto o certifica ciò che è stato appreso, ma un'occasione di <b>apprendimento</b>, di <b>crescita</b> e di <b>presa di coscienza</b>.</p>
+    </div>
+    <div class="scene"><div class="blob"></div><div class="blob2"></div><div class="main"><i class="ic" data-ic="seedling"></i></div><div class="sat p1"><i class="ic" data-ic="graduation-cap"></i></div><div class="sat p2"><i class="ic" data-ic="mirror"></i></div><div class="sat p4"><i class="ic" data-ic="light-bulb"></i></div></div>
+  </div>
+</section>
+
+<section class="slide" data-sec="intro">
+  <div class="eyebrow">E-portfolio</div>
+  <h2>Capire chi stiamo diventando</h2>
+  <div class="cols c2e" style="align-items:start;gap:34px">
+    <div>
+      <p class="txt">Non un archivio digitale: lo studente</p>
+      <div class="steps">
+        <div class="step"><i class="ic" data-ic="magnifying-glass-tilted-left"></i><span><b>seleziona</b> le proprie esperienze</span></div>
+        <div class="step"><i class="ic" data-ic="card-file-box"></i><span><b>organizza</b> il percorso nel tempo</span></div>
+        <div class="step"><i class="ic" data-ic="writing-hand"></i><span><b>commenta</b> competenze e difficoltà</span></div>
+      </div>
+    </div>
+    <div class="panel" style="background:var(--c);color:#fff">
+      <i class="ic" data-ic="woman-teacher" style="font-size:100px"></i>
+      <h3 style="margin-top:8px">Per noi, future insegnanti</h3>
+      <p class="txt" style="font-size:26px">Accompagna università e tirocinio e collega esperienze pratiche e riflessioni teoriche.</p>
+      <p class="txt" style="font-size:26px;margin:0">Ci abitua a una <b>postura riflessiva e responsabile</b>: osservare il proprio lavoro, riconoscere i punti di forza, migliorare sempre la pratica.</p>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-sec="intro">
+  <div class="eyebrow">Feedback</div>
+  <h2>Dialogico, tempestivo, orientato al miglioramento</h2>
+  <p class="txt">Non solo <b>cosa</b> ho sbagliato, ma soprattutto <b>come</b> migliorare e con quali strategie.</p>
+  <div class="tiles t4 compact">
+    <div class="tile"><i class="ic" data-ic="mobile-phone" style="font-size:64px"></i><h3>Risponditori</h3>adattare la lezione alla classe</div>
+    <div class="tile"><i class="ic" data-ic="memo" style="font-size:64px"></i><h3>One Minute Paper</h3>riflessione e autoregolazione</div>
+    <div class="tile"><i class="ic" data-ic="headphone" style="font-size:64px"></i><h3>Audio e video</h3>comunicazione personale e comprensibile</div>
+    <div class="tile"><i class="ic" data-ic="handshake" style="font-size:64px"></i><h3>Peer feedback</h3>ascolto, confronto e collaborazione</div>
+  </div>
+  <div class="panel row" style="margin-top:22px;gap:22px;flex-wrap:nowrap"><i class="ic" data-ic="spiral-calendar" style="font-size:80px;flex:none"></i><p class="txt" style="margin:0">Non un evento isolato: con <b>blog, wiki ed e-portfolio</b> attività, commenti e riflessioni si collegano nel tempo.</p></div>
+</section>
+
+<section class="slide" data-sec="intro">
+  <div class="eyebrow">Open badge e blockchain</div>
+  <h2>Competenze che nascono anche fuori dalla scuola</h2>
+  <div class="tiles t4 compact" style="text-align:center">
+    <div class="tile tint"><i class="ic" data-ic="office-building" style="font-size:80px"></i><h3>Lavoro</h3></div>
+    <div class="tile tint"><i class="ic" data-ic="handshake" style="font-size:80px"></i><h3>Volontariato</h3></div>
+    <div class="tile tint"><i class="ic" data-ic="sports-medal" style="font-size:80px"></i><h3>Sport</h3></div>
+    <div class="tile tint"><i class="ic" data-ic="artist-palette" style="font-size:80px"></i><h3>Attività personali</h3></div>
+  </div>
+  <div class="cols c2e" style="margin-top:26px;gap:26px">
+    <div class="panel row" style="gap:20px;flex-wrap:nowrap"><i class="ic" data-ic="sports-medal" style="font-size:80px;flex:none"></i><p class="txt" style="margin:0">Gli <b>open badge</b> le rendono <b>visibili e riconoscibili</b>.</p></div>
+    <div class="panel row" style="gap:20px;flex-wrap:nowrap"><i class="ic" data-ic="locked" style="font-size:80px;flex:none"></i><p class="txt" style="margin:0">La <b>blockchain</b> garantisce <b>sicurezza, verificabilità e continuità</b> di titoli e certificazioni.</p></div>
+  </div>
+</section>
+
+<section class="slide" data-sec="intro" style="background:#141b34;color:#fff">
+  <div class="eyebrow" style="color:#ffc65a">Attenzione però</div>
+  <h1 style="font-size:96px;max-width:1300px">La tecnologia, da sola, non produce apprendimento.</h1>
+  <p class="lead" style="color:#d4dcff;margin-top:30px;max-width:1250px">Fa la differenza <b style="background:none;color:#ffc65a">come</b> viene scelta, inserita nelle attività e usata da docenti e studenti: serve un uso <b style="background:none;color:#ffc65a">consapevole e pedagogicamente fondato</b>.</p>
+</section>
+
+<section class="slide" data-sec="intro">
+  <div class="eyebrow">Usati con intenzionalità educativa</div>
+  <h2>E-portfolio, feedback, badge e blockchain spostano l'attenzione</h2>
+  <div style="display:grid;gap:18px;margin-top:10px">
+    <div class="shift"><span class="from">dal <b>risultato finale</b></span><span class="arr">→</span><span class="to">al <b>processo di apprendimento</b></span></div>
+    <div class="shift"><span class="from">dal <b>voto</b></span><span class="arr">→</span><span class="to">alla <b>riflessione</b></span></div>
+    <div class="shift"><span class="from">dalla <b>passività</b> dello studente</span><span class="arr">→</span><span class="to">alla sua <b>partecipazione attiva</b></span></div>
+</div>
+</section>
+
+<section class="slide" data-sec="intro">
+  <div class="eyebrow">Per noi, future insegnanti</div>
+  <h2>Le tecnologie come risorse per far crescere gli studenti</h2>
+  <div class="tiles t4" style="text-align:center">
+    <div class="tile tint"><i class="ic" data-ic="rocket"></i><h3>Autonomia</h3></div>
+    <div class="tile tint"><i class="ic" data-ic="light-bulb"></i><h3>Consapevolezza</h3></div>
+    <div class="tile tint"><i class="ic" data-ic="key"></i><h3>Responsabilità</h3></div>
+    <div class="tile tint"><i class="ic" data-ic="seedling"></i><h3>Crescita personale</h3></div>
+  </div>
+  <p class="lead" style="margin-top:30px;font-size:34px">Così la valutazione diventa davvero un'occasione per <b>imparare</b>, <b>riflettere</b> e <b>costruire la propria identità</b>.</p>
+</section>
+
+<section class="slide" data-sec="intro">
+  <div class="act-pill"><i class="ic" data-ic="memo"></i>One Minute Paper</div>
+  <div class="panel" data-act="omp">
+    <div class="cols c2e" style="align-items:center">
+      <div>
+        <h2 style="font-size:48px;margin-bottom:16px">Avete un minuto. Scrivete:</h2>
+        <div class="steps" style="gap:10px">
+          <div class="step" style="padding:12px 18px;font-size:24px"><i class="ic" data-ic="light-bulb" style="font-size:44px"></i>il concetto più importante di oggi</div>
+          <div class="step" style="padding:12px 18px;font-size:24px"><i class="ic" data-ic="sparkles" style="font-size:44px"></i>lo strumento che vi ha colpito di più</div>
+          <div class="step" style="padding:12px 18px;font-size:24px"><i class="ic" data-ic="thinking-face" style="font-size:44px"></i>un dubbio che vi è rimasto</div>
+        </div>
+      </div>
+      <div>
+        <div class="omp-clock" id="omp-clock">1:00</div>
+        <div class="row" style="justify-content:center;margin-top:12px"><button class="btn" id="omp-start">Avvia il minuto</button><button class="btn ghost" id="omp-reset">Azzera</button></div>
+      </div>
+    </div>
+    <div class="addline" style="margin-top:14px"><input id="omp-in" placeholder="Scrivete qui una risposta letta ad alta voce" aria-label="Risposta della classe"><button class="btn" id="omp-add">Aggiungi</button></div>
+    <div class="stickies" id="omp-board"></div>
+  </div>
+</section>
+
+<section class="slide cover" data-sec="intro">
+  <div class="thanks">
+    <div>
+      <div class="row" style="justify-content:center;gap:30px;font-size:130px;margin-bottom:30px"><i class="ic" data-ic="open-file-folder"></i><i class="ic" data-ic="speech-balloon"></i><i class="ic" data-ic="sports-medal"></i><i class="ic" data-ic="link"></i></div>
+      <h1 style="font-size:120px">Grazie!</h1>
+      <p class="lead" style="color:#d4dcff;margin-top:20px" id="all-names"></p>
+    </div>
+  </div>
+</section>
+
+<div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-label="Partecipa con il telefono">
+  <div class="ov">
+    <div id="qr"></div>
+    <div>
+      <div class="eyebrow" style="color:var(--c-intro)">Partecipa con il telefono</div>
+      <h2 style="font-size:58px">Inquadrate il QR code</h2>
+      <p class="txt">oppure aprite</p>
+      <p class="ov-url" id="ov-url">…</p>
+      <p class="small" id="ov-note"></p>
+      <button class="btn" id="ov-close" style="background:var(--c-intro);margin-top:10px">Chiudi</button>
+    </div>
+  </div>
+</div>
+
+<div id="bar">
+  <div class="prog" id="prog"></div>
+  <div class="sec"><span class="sw"></span><span id="sec-name">Introduzione</span><span class="spk" id="spk"></span></div>
+  <div class="sp"></div>
+  <button id="home" aria-label="Torna all'indice">● Indice</button>
+  <button class="live-only" id="join-btn">📱 Partecipa</button>
+  <span class="clock" id="clock">4:00</span>
+  <button id="tstart">Avvia</button>
+  <button id="treset">Azzera</button>
+  <button id="prev" aria-label="Slide precedente">←</button>
+  <span class="count" id="count">1 / 1</span>
+  <button id="next" aria-label="Slide successiva">→</button>
+  <button id="fs" aria-label="Schermo intero">⛶</button>
+</div>
+</div>
+
+<script>/*QRLIB*/</script>
+<script>
+const ICONS=/*ICONS*/;
+const SHOW_NAMES=false;
+(function(){
+  if(!SHOW_NAMES)document.body.classList.add("nonames");
+  document.querySelectorAll("[data-ic]").forEach(el=>{el.innerHTML=ICONS[el.dataset.ic]||""});
+  document.querySelectorAll(".step").forEach(st=>{const nodes=[...st.childNodes].filter(n=>!(n.nodeType===1&&(n.classList.contains("ic")||n.classList.contains("num"))));if(nodes.length===1&&nodes[0].nodeType===1&&nodes[0].tagName==="SPAN")return;const sp=document.createElement("span");nodes.forEach(n=>sp.appendChild(n));st.appendChild(sp)});
+  const store={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
+
+  /* ---------- Palcoscenico 16:9 ---------- */
+  const stage=document.getElementById("stage");
+  function fit(){const s=Math.min(innerWidth/1600,innerHeight/900);stage.style.transform="scale("+s+") translate(-50%,-50%)";stage.style.transformOrigin="0 0";stage.style.left="50%";stage.style.top="50%";stage.style.transform="translate(-50%,-50%) scale("+s+")";stage.style.transformOrigin="center"}
+  addEventListener("resize",fit);fit();
+
+  /* ---------- Sezioni e relatori ---------- */
+  const SEC={intro:{n:"Introduzione",who:"A",min:4,c:"#2f56d9"},identita:{n:"16.1 E-portfolio e identità",who:"B",min:8,c:"#0e9486"},tempestivita:{n:"16.2 Feedback tempestivo",who:"C",min:8,c:"#ea6f12"},multimediale:{n:"16.2 Feedback multimediale e tra pari",who:"D",min:8,c:"#d2397f"},badge:{n:"16.3 Open badge e Blockchain",who:"E",min:8,c:"#6d45e3"},conclusioni:{n:"Conclusioni",who:"A",min:4,c:"#141b34"}};
+  const slides=[...document.querySelectorAll(".slide")];
+  // le slide dopo il divisore "Conclusioni" appartengono alle conclusioni
+  let afterEnd=false;slides.forEach(s=>{if(s.querySelector("[data-end]"))afterEnd=true;s.dataset.part=afterEnd?"conclusioni":s.dataset.sec});
+  const defaults={A:"Adriana",B:"Relatrice B",C:"Relatrice C",D:"Relatrice D",E:"Relatore E"};
+  const names={};Object.keys(defaults).forEach(k=>names[k]=store.get("cap16-name-"+k)||defaults[k]);
+  function paintNames(){
+    document.querySelectorAll("input[data-name]").forEach(i=>{if(document.activeElement!==i)i.value=names[i.dataset.name]});
+    document.querySelectorAll("[data-show]").forEach(e=>e.textContent=names[e.dataset.show]);
+    document.querySelectorAll("[data-av]").forEach(e=>{const k=e.dataset.av,n=names[k].trim();e.textContent=n===defaults[k]||!n?k:n[0].toUpperCase()});
+    document.getElementById("all-names").textContent=[...new Set(["A","B","C","D","E"].map(k=>names[k]))].join(" · ");
+    paintBar();
+  }
+  document.querySelectorAll("input[data-name]").forEach(i=>i.addEventListener("input",()=>{names[i.dataset.name]=i.value;store.set("cap16-name-"+i.dataset.name,i.value);paintNames()}));
+
+  /* ---------- Navigazione ---------- */
+  let cur=0,curPart=null;
+  function paintBar(){
+    const s=slides[cur],p=SEC[s.dataset.part];
+    document.getElementById("sec-name").textContent=p.n;
+    document.getElementById("spk").textContent="· "+names[p.who];
+    stage.style.setProperty("--cur",p.c);
+    document.getElementById("count").textContent=(cur+1)+" / "+slides.length;
+    document.getElementById("prog").style.width=((cur+1)/slides.length*100)+"%";
+  }
+  function go(i){
+    cur=Math.max(0,Math.min(slides.length-1,i));
+    slides.forEach((s,k)=>s.classList.toggle("on",k===cur));
+    const part=slides[cur].dataset.part;
+    if(part!==curPart){curPart=part;resetTimer()}
+    paintBar();
+    try{history.replaceState(null,"","#s"+(cur+1))}catch(e){}
+  }
+  document.getElementById("next").onclick=()=>go(cur+1);
+  document.getElementById("prev").onclick=()=>go(cur-1);
+  document.getElementById("fs").onclick=()=>{try{document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen()}catch(e){}};
+  addEventListener("keydown",e=>{
+    if(["INPUT","TEXTAREA"].includes(document.activeElement.tagName))return;
+    if(["ArrowRight","PageDown"," "].includes(e.key)){e.preventDefault();go(cur+1)}
+    if(["ArrowLeft","PageUp"].includes(e.key)){e.preventDefault();go(cur-1)}
+    if(e.key==="Home")go(0);if(e.key==="End")go(slides.length-1);
+  });
+
+  /* ---------- Cronometro della parte ---------- */
+  const clock=document.getElementById("clock"),tstart=document.getElementById("tstart");let left=240,tick=null;
+  const fmt=s=>(s<0?"−":"")+Math.floor(Math.abs(s)/60)+":"+String(Math.abs(s)%60).padStart(2,"0");
+  function paintClock(){clock.textContent=fmt(left);clock.classList.toggle("late",left<=30)}
+  function resetTimer(){clearInterval(tick);tick=null;tstart.textContent="Avvia";left=SEC[slides[cur].dataset.part].min*60;paintClock()}
+  tstart.onclick=()=>{if(tick){clearInterval(tick);tick=null;tstart.textContent="Riprendi"}else{tick=setInterval(()=>{left--;paintClock()},1000);tstart.textContent="Pausa"}};
+  document.getElementById("treset").onclick=resetTimer;
+
+  /* ---------- Sondaggi ---------- */
+  const LIVE={on:false,counts:{}};const polls={};
+  document.querySelectorAll(".poll").forEach(p=>{
+    const rows=[...p.querySelectorAll(".prow")],vals=rows.map(()=>0),act=p.dataset.poll;
+    function draw(){const ph=LIVE.counts[act]||[];const tot=vals.map((v,i)=>v+(ph[i]||0));const max=Math.max(1,...tot);rows.forEach((r,i)=>{r.querySelector("output").textContent=tot[i];r.querySelector(".bar i").style.width=(tot[i]/max*100)+"%"})}
+    polls[act]=draw;
+    rows.forEach((r,i)=>{const [m,pl]=r.querySelectorAll(".cnt button");m.onclick=()=>{vals[i]=Math.max(0,vals[i]-1);draw()};pl.onclick=()=>{vals[i]++;draw()}});
+    draw();
+  });
+
+  /* ---------- E-portfolio ---------- */
+  const folder=document.getElementById("pf-folder"),pfs=document.getElementById("pf-status");
+  function pf(){
+    const on=[...document.querySelectorAll("#pf-items .chip.on")];folder.innerHTML="";
+    on.forEach(c=>{const s=c.cloneNode(true);s.className="chip static";s.removeAttribute("data-k");folder.appendChild(s)});
+    const m=on.filter(c=>c.dataset.k==="m").length,r=on.filter(c=>c.dataset.k==="r").length;
+    pfs.className="status";
+    if(!on.length)pfs.textContent="Ancora vuoto.";
+    else if(!r)pfs.textContent="Per ora è solo un archivio di materiali: manca la riflessione.";
+    else if(!m)pfs.textContent="C'è la riflessione, ma mancano le prove che la documentano.";
+    else{pfs.className="status good";pfs.textContent="Ora è un e-portfolio: materiali significativi + riflessione."}
+  }
+  document.querySelectorAll("#pf-items .chip").forEach(c=>c.onclick=()=>{c.classList.toggle("on");pf()});
+
+  /* ---------- Quiz ---------- */
+  const quiz=[
+    {q:"Che cos'è l'e-portfolio?",o:["Un registro dei voti online","Una raccolta di materiali significativi e di riflessioni personali","Un test a scelta multipla"],r:1,n:"È un artefatto personale: materiali + riflessioni del soggetto (Rossi e Giannandrea, 2006)."},
+    {q:"Secondo la ricerca, cosa migliora in modo significativo usando l'e-portfolio?",o:["Il coinvolgimento","L'autoefficacia","Il numero di assenze"],r:1,n:"Il coinvolgimento non cambia in modo significativo, l'autoefficacia sì, insieme ai voti finali."},
+    {q:"Cosa significa la sigla del progetto Mosep?",o:["More Self Esteem with ePortfolios","Modern School E-Portfolio","Motivation and Self Evaluation Project"],r:0,n:"Il progetto ha mostrato che l'e-portfolio rinforza autostima e autoefficacia."}
+  ];
+  let qi=0;
+  function drawQ(){
+    const it=quiz[qi];it.v=it.v||it.o.map(()=>0);
+    document.getElementById("qz-n").textContent="Domanda "+(qi+1)+" di "+quiz.length;
+    document.getElementById("qz-q").textContent=it.q;
+    const box=document.getElementById("qz-opts");box.innerHTML="";
+    it.o.forEach((t,i)=>{const d=document.createElement("div");d.className="opt";d.innerHTML='<span class="l">'+"ABC"[i]+'</span><span></span><div class="bar"><i></i></div><div class="cnt"><button aria-label="meno">−</button><output>0</output><button aria-label="più">+</button></div>';d.children[1].textContent=t;const [m,p]=d.querySelectorAll("button");m.onclick=()=>{it.v[i]=Math.max(0,it.v[i]-1);bars()};p.onclick=()=>{it.v[i]++;bars()};box.appendChild(d)});
+    document.getElementById("qz-note").classList.remove("on");bars();
+  }
+  function bars(){const it=quiz[qi];const ph=LIVE.counts["quiz-"+qi]||[];const tot=it.v.map((v,i)=>v+(ph[i]||0));const max=Math.max(1,...tot);document.querySelectorAll("#qz-opts .opt").forEach((d,i)=>{d.querySelector("output").textContent=tot[i];d.querySelector(".bar i").style.width=(tot[i]/max*100)+"%"})}
+  document.getElementById("qz-show").onclick=()=>{const it=quiz[qi];document.querySelectorAll("#qz-opts .opt").forEach((d,i)=>d.classList.toggle("right",i===it.r));const n=document.getElementById("qz-note");n.textContent="Risposta corretta: "+"ABC"[it.r]+". "+it.n;n.classList.add("on")};
+  document.getElementById("qz-next").onclick=()=>{qi=(qi+1)%quiz.length;drawQ();if(LIVE.on&&LIVE.open&&LIVE.open.startsWith("quiz-"))LIVE.cmd("open","quiz-"+qi)};
+  drawQ();
+
+  /* ---------- Feedback vocale ---------- */
+  const tm=document.getElementById("tts-msg");
+  document.getElementById("tts").onclick=()=>{try{if(!("speechSynthesis" in window))throw 0;speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(document.getElementById("fb-text").textContent.replace(/[«»]/g,""));u.lang="it-IT";u.rate=.95;const v=speechSynthesis.getVoices().find(v=>v.lang&&v.lang.startsWith("it"));if(v)u.voice=v;speechSynthesis.speak(u);tm.textContent=""}catch(e){tm.textContent="Questo browser non legge ad alta voce: caricate il vostro audio registrato con Mote."}};
+  document.getElementById("aud-file").onchange=e=>{const f=e.target.files[0];if(!f)return;const a=document.getElementById("aud");a.src=URL.createObjectURL(f);a.style.display="block";a.play().catch(()=>{})};
+
+  /* ---------- Ladder of Feedback ---------- */
+  const rungs=[["Chiarimento","Domande per capire meglio","Usi una pizza vera o di cartone?"],["Apprezzamenti","Cosa funziona e perché","L'esempio concreto aiuta"],["Preoccupazioni","Dubbi e possibili problemi","E se confondono parti e fette?"],["Suggerimenti","Proposte per migliorare","Far dividere la pizza ai bambini"]];
+  const lad=document.getElementById("ladder");
+  rungs.forEach((r,i)=>{const d=document.createElement("div");d.className="rung";d.innerHTML='<div><h4>'+(i+1)+". "+r[0]+'</h4><p>'+r[1]+'</p></div><div><div class="notes" id="rung-'+i+'"></div><div class="addline"><input aria-label="Commento: '+r[0]+'" placeholder="Es.: '+r[2]+'"><button class="btn">+</button></div></div>';const inp=d.querySelector("input"),notes=d.querySelector(".notes");const add=()=>{if(!inp.value.trim())return;const n=document.createElement("div");n.className="note";n.textContent=inp.value.trim();notes.appendChild(n);inp.value=""};d.querySelector("button").onclick=add;inp.addEventListener("keydown",e=>{if(e.key==="Enter")add()});lad.appendChild(d)});
+
+  /* ---------- Open Badge ---------- */
+  const badges=[
+    {n:"Peer Reviewer",c:"#2f56d9",ic:"speech-balloon",i:"Docente di Tecnologie dell'educazione",w:"Dare feedback costruttivo ai compagni con la Ladder of Feedback",k:"Almeno 3 feedback completi, giudicati utili dai compagni"},
+    {n:"Narratore digitale",c:"#0e9486",ic:"clapper-board",i:"Scuola primaria, laboratorio di tirocinio",w:"Progettare e realizzare una storia digitale con la classe",k:"Storyboard, prodotto finale e riflessione nell'e-portfolio"},
+    {n:"Esploratore europeo",c:"#ea6f12",ic:"globe-showing-europe-africa",i:"Organizzazione del progetto Erasmus+",w:"Lavorare in un gruppo internazionale e comunicare in lingua straniera",k:"Partecipazione a un progetto all'estero e diario riflessivo"}
+  ];
+  const pick=document.getElementById("badge-pick");
+  function drawBadge(b){
+    const inner=(ICONS[b.ic]||"").replace("<svg ",'<svg x="66" y="38" width="68" height="68" ');
+    document.getElementById("badge-svg").innerHTML='<path d="M70 150 l-20 60 30 -14 18 26 12 -62z" fill="'+b.c+'" opacity=".55"/><path d="M130 150 l20 60 -30 -14 -18 26 -12 -62z" fill="'+b.c+'" opacity=".55"/><polygon points="100,8 172,50 172,130 100,172 28,130 28,50" fill="'+b.c+'"/><polygon points="100,26 156,58 156,122 100,154 44,122 44,58" fill="#fff"/>'+inner+'<text x="100" y="134" text-anchor="middle" font-family="Bricolage Grotesque,sans-serif" font-weight="800" font-size="12" fill="#141b34">OPEN BADGE</text>';
+    const info=document.getElementById("badge-info");info.innerHTML="";
+    [["Chi lo assegna",b.i],["In cosa consiste",b.w],["Criteri",b.k]].forEach(([t,v])=>{const d=document.createElement("div");d.className="binfo";d.innerHTML="<b></b>";d.firstChild.textContent=t;d.append(v);info.appendChild(d)});
+  }
+  badges.forEach((b,i)=>{const c=document.createElement("button");c.className="chip"+(i?"":" on");c.dataset.i=i;c.innerHTML=ICONS[b.ic]?'<i class="ic">'+ICONS[b.ic]+'</i>':"";const sp=document.createElement("span");sp.textContent=b.n;sp.dataset.name=b.n;c.appendChild(sp);c.onclick=()=>{pick.querySelectorAll(".chip").forEach(x=>x.classList.toggle("on",x===c));drawBadge(b)};pick.appendChild(c)});
+  drawBadge(badges[0]);
+
+  /* ---------- Blockchain ---------- */
+  const fields=["d-nome","d-titolo","d-voto","d-ente"].map(id=>document.getElementById(id)),orig=fields.map(f=>f.value);let oh="";
+  async function sha(s){try{const b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(s));return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,"0")).join("")}catch(e){let h=0x811c9dc5;for(const ch of s){h^=ch.charCodeAt(0);h=Math.imul(h,16777619)>>>0}return h.toString(16).padStart(8,"0").repeat(8)}}
+  async function check(){const now=await sha(fields.map(f=>f.value).join("|"));document.getElementById("h-now").textContent=now;const v=document.getElementById("verdict");if(now===oh){v.className="verdict ok";v.textContent="✓ Titolo valido"}else{v.className="verdict no";v.textContent="✗ NON VALIDO: diploma modificato"}}
+  (async()=>{oh=await sha(orig.join("|"));document.getElementById("h-orig").textContent=oh;check()})();
+  fields.forEach(f=>f.addEventListener("input",check));
+  document.getElementById("d-reset").onclick=()=>{fields.forEach((f,i)=>f.value=orig[i]);check()};
+
+  /* ---------- One Minute Paper ---------- */
+  const oc=document.getElementById("omp-clock");let ol=60,ot=null;
+  const op=()=>{oc.textContent=Math.floor(ol/60)+":"+String(ol%60).padStart(2,"0");oc.classList.toggle("done",ol===0)};
+  document.getElementById("omp-start").onclick=()=>{if(ot)return;ot=setInterval(()=>{ol--;op();if(ol<=0){clearInterval(ot);ot=null}},1000)};
+  document.getElementById("omp-reset").onclick=()=>{clearInterval(ot);ot=null;ol=60;op()};
+  const oin=document.getElementById("omp-in"),board=document.getElementById("omp-board");
+  const oadd=()=>{if(!oin.value.trim())return;const s=document.createElement("div");s.className="sticky";s.textContent=oin.value.trim();board.prepend(s);oin.value=""};
+  document.getElementById("omp-add").onclick=oadd;oin.addEventListener("keydown",e=>{if(e.key==="Enter")oadd()});
+
+  /* ---------- Dal vivo: telefoni collegati al server locale ---------- */
+  const TOKEN="__ADMIN_TOKEN__";
+  if(TOKEN.indexOf("ADMIN_TOKEN")===-1){
+    LIVE.on=true;document.body.classList.add("live");
+    LIVE.cmd=async(cmd,act)=>{try{await fetch("/api/admin",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({t:TOKEN,cmd,act})});refresh()}catch(e){}};
+    const actOf=p=>p.dataset.act==="quiz"?"quiz-"+qi:p.dataset.act;
+    document.querySelectorAll("[data-act]").forEach(p=>{
+      const b=document.createElement("div");b.className="livebar";
+      b.innerHTML='<span class="st">📱 Telefoni: chiuso</span><button class="lb-btn lb-open">Apri ai telefoni</button><button class="lb-reset">Azzera risposte</button><span class="n"></span>';
+      p.prepend(b);
+      b.querySelector(".lb-btn").onclick=()=>{const a=actOf(p);LIVE.open===a?LIVE.cmd("close"):LIVE.cmd("open",a)};
+      b.querySelector(".lb-reset").onclick=()=>LIVE.cmd("reset",actOf(p));
+    });
+    const seen=new Set();
+    function addText(act,t){
+      if(seen.has(act+t.id))return;seen.add(act+t.id);
+      if(act==="portfolio"){const c=document.createElement("span");c.className="chip static";c.textContent="📱 "+t.text;document.getElementById("pf-phone").appendChild(c)}
+      if(act==="ladder"){const n=document.createElement("div");n.className="note";n.textContent="📱 "+t.text;document.getElementById("rung-"+t.rung)?.appendChild(n)}
+      if(act==="omp"){const n=document.createElement("div");n.className="sticky";const l=document.createElement("div");l.className="small";l.style.fontWeight="700";l.textContent="📱 "+(["Concetto più importante","Strumento che ha colpito","Dubbio"][t.rung]||"");n.append(l,t.text);board.prepend(n)}
+    }
+    async function refresh(){
+      let s;try{const r=await fetch("/api/admin?t="+encodeURIComponent(TOKEN),{cache:"no-store"});s=await r.json()}catch(e){return}
+      LIVE.open=s.open;
+      for(const [k,a] of Object.entries(s.acts)){LIVE.counts[k]=a.counts;a.texts.forEach(t=>addText(k,t))}
+      Object.values(polls).forEach(d=>d());bars();
+      pick.querySelectorAll(".chip").forEach(c=>{const n=(LIVE.counts.badge||[])[+c.dataset.i]||0;const sp=c.querySelector("span");sp.textContent=sp.dataset.name+(n?" · "+n:"")});
+      document.querySelectorAll("[data-act]").forEach(p=>{
+        const a=actOf(p),on=s.open===a,info=s.acts[a];
+        p.classList.toggle("isopen",on);
+        const st=p.querySelector(".livebar .st");st.textContent=on?"📱 Telefoni: aperto":"📱 Telefoni: chiuso";st.classList.toggle("on",on);
+        const b=p.querySelector(".lb-btn");b.textContent=on?"Chiudi ai telefoni":"Apri ai telefoni";b.className="lb-btn "+(on?"lb-close":"lb-open");
+        p.querySelector(".livebar .n").textContent=info&&info.people?info.people+(info.people===1?" telefono ha risposto":" telefoni hanno risposto"):"";
+      });
+      const url=(s.urls.public||s.urls.lan)+"/vota";
+      if(url!==LIVE.url){LIVE.url=url;document.getElementById("ov-url").textContent=url.replace(/^https?:\/\//,"");try{const q=qrcode(0,"M");q.addData(url);q.make();document.getElementById("qr").innerHTML=q.createSvgTag({cellSize:8,margin:2,scalable:true})}catch(e){}}
+      document.getElementById("ov-note").textContent=s.urls.public?"Funziona con qualsiasi connessione, anche con i dati mobili.":(s.urls.tunnel==="in avvio"?"Sto preparando il link pubblico: per ora serve la stessa rete Wi-Fi del Mac.":"I telefoni devono essere sulla stessa rete Wi-Fi del Mac.");
+    }
+    const ov=document.getElementById("overlay");
+    document.getElementById("join-btn").onclick=()=>ov.classList.add("on");
+    document.getElementById("ov-close").onclick=()=>ov.classList.remove("on");
+    ov.onclick=e=>{if(e.target===ov)ov.classList.remove("on")};
+    addEventListener("keydown",e=>{if(e.key==="Escape")ov.classList.remove("on")});
+    refresh();setInterval(refresh,1200);
+  }
+
+  /* ---------- Indice: pallini e fantasmino ---------- */
+  const ORDER=["intro","identita","tempestivita","multimediale","badge","conclusioni"];
+  const ICON={intro:"compass",identita:"open-file-folder",tempestivita:"stopwatch",multimediale:"headphone",badge:"sports-medal",conclusioni:"light-bulb"};
+  const SHORT={intro:"Introduzione",identita:"16.1 E-portfolio",tempestivita:"16.2 Tempestività",multimediale:"16.2 Multimediale",badge:"16.3 Badge",conclusioni:"Conclusioni"};
+  const TOPIC={intro:"di cosa parleremo oggi",identita:"e-portfolio e costruzione dell'identità",tempestivita:"il feedback learning-centred e i risponditori",multimediale:"feedback audio e video, tra pari e nel tempo",badge:"Open Badge, Blockchain e Blockcert",conclusioni:"cosa ci portiamo a casa, con il One Minute Paper"};
+  const firstOf=k=>k==="intro"?1:slides.findIndex(s=>s.dataset.part===k);
+  const visited=new Set();
+  const dotsBox=document.getElementById("dots"),bubble=document.getElementById("bubble");
+  let typer=null;
+  function say(html){clearInterval(typer);const tmp=document.createElement("div");tmp.innerHTML=html;const full=tmp.innerHTML;let i=0;bubble.innerHTML="";
+    if(matchMedia("(prefers-reduced-motion: reduce)").matches){bubble.innerHTML=full;return}
+    typer=setInterval(()=>{i++;while(full[i-1]==="<"){const j=full.indexOf(">",i);i=j+2}bubble.innerHTML=full.slice(0,i);if(i>=full.length)clearInterval(typer)},22)}
+  const esc=t=>{const d=document.createElement("div");d.textContent=t;return d.innerHTML};
+  function greet(){
+    const nx=ORDER.find(k=>!visited.has(k));
+    const con=k=>SHOW_NAMES?" con <b>"+esc(names[SEC[k].who])+"</b>":"";
+    if(!visited.size)say(SHOW_NAMES?"Ciao! Oggi sarò la vostra <b>guida</b> 👻 Ogni pallino è un capitolo: cliccatelo e si apre. Si parte con <b>"+esc(names.A)+"</b>, che vi spiega di cosa parleremo!":"Ciao! Oggi sarò la vostra <b>guida</b> 👻 Ogni pallino è un capitolo: cliccatelo e si apre. Si parte dall'<b>introduzione</b>, per scoprire di cosa parleremo!");
+    else if(nx)say("Bravi! Prossima tappa: <b>"+SHORT[nx]+"</b>"+con(nx)+". Cliccate il pallino che lampeggia!");
+    else say("Abbiamo visitato tutti i capitoli! 🎉 Grazie per avermi seguito.");
+  }
+  function buildDots(){
+    dotsBox.innerHTML="";const nx=ORDER.find(k=>!visited.has(k));
+    ORDER.forEach(k=>{
+      const b=document.createElement("button");b.className="dot-btn"+(visited.has(k)?" done":"")+(k===nx?" next":"");b.style.setProperty("--dc",SEC[k].c);
+      b.innerHTML='<span class="d"><i class="ic">'+(ICONS[ICON[k]]||"")+'</i></span><span class="tick">✓</span><span class="lab">'+SHORT[k]+'</span><span class="who"></span>';
+      b.querySelector(".who").textContent=names[SEC[k].who];
+      b.setAttribute("aria-label",SHORT[k]+(SHOW_NAMES?", con "+names[SEC[k].who]:""));
+      b.onmouseenter=b.onfocus=()=>say("<b>"+SHORT[k]+"</b>: "+TOPIC[k]+"."+(SHOW_NAMES?" Ve lo racconta <b>"+esc(names[SEC[k].who])+"</b>.":""));
+      b.onmouseleave=()=>greet();
+      b.onclick=()=>openPart(k,b);
+      dotsBox.appendChild(b);
+    });
+  }
+  function openPart(k,btn){
+    const z=document.getElementById("zoom"),r=btn.querySelector(".d").getBoundingClientRect(),st=stage.getBoundingClientRect(),sc=st.width/1600;
+    z.style.background=SEC[k].c;z.style.left=((r.left-st.left)/sc)+"px";z.style.top=((r.top-st.top)/sc)+"px";
+    z.style.transition="none";z.style.transform="scale(1)";z.style.opacity="1";
+    if(matchMedia("(prefers-reduced-motion: reduce)").matches){go(firstOf(k));z.style.opacity="0";return}
+    requestAnimationFrame(()=>{z.style.transition="transform .55s cubic-bezier(.6,0,.3,1)";z.style.transform="scale(40)"});
+    setTimeout(()=>{go(firstOf(k));z.style.transition="none";z.style.opacity="0";z.style.transform="scale(1)"},560);
+  }
+  document.getElementById("home").onclick=()=>go(0);
+  document.querySelectorAll("[data-home]").forEach(b=>b.onclick=()=>go(0));
+  document.querySelector("#ghost .ghost").onclick=()=>greet();
+  const _go=go;go=function(i){_go(i);if(cur>0){visited.add(slides[cur].dataset.part)}if(cur===0){buildDots();greet()}};
+  // fantasmino piccolo nei divisori
+  slides.forEach(sl=>{if(!sl.classList.contains("divider"))return;const k=sl.dataset.part;const g=document.createElement("div");g.className="mini-ghost";g.innerHTML='<div class="bubble"></div>'+document.querySelector("#ghost .ghost").outerHTML;g.querySelector(".ghost").setAttribute("aria-hidden","true");sl.appendChild(g);sl._ghost=g.querySelector(".bubble")});
+  const _pn=paintNames;paintNames=function(){_pn();slides.forEach(sl=>{if(sl._ghost){const k=sl.dataset.part;if(SHOW_NAMES){sl._ghost.innerHTML="Ora tocca a <b></b>!";sl._ghost.querySelector("b").textContent=names[SEC[k].who]}else{sl._ghost.innerHTML="Tappa: <b></b>";sl._ghost.querySelector("b").textContent=SHORT[k]}}});if(cur===0&&dotsBox.children.length){buildDots()}};
+
+  paintNames();
+  const m=/^#s(\d+)$/.exec(location.hash);go(m?+m[1]-1:0);
+})();
+</script>
+</body>
+</html>

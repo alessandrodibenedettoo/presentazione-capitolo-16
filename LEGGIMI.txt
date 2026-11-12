@@ -1,0 +1,19 @@
+PRESENTAZIONE CAPITOLO 16 - COME SI USA
+
+1. Doppio clic su "Avvia presentazione.command": scarica da solo gli aggiornamenti da GitHub.
+   (La prima volta macOS può chiedere conferma: tasto destro > Apri > Apri.)
+2. Si apre il browser con la presentazione. Collegate il Mac al proiettore.
+3. Premete "📱 Partecipa" in alto: compare il QR code da far inquadrare ai compagni.
+   Dopo qualche secondo il link diventa pubblico (funziona anche con i dati mobili).
+4. In ogni attività "Con la classe" premete "Apri ai telefoni": la domanda compare
+   sui telefoni e i risultati arrivano in diretta. "Chiudi ai telefoni" per fermarla.
+5. Alla fine chiudete la finestra del Terminale. Le risposte restano in risultati.json.
+
+Se il link pubblico non parte (niente internet), i telefoni devono essere
+sulla stessa rete Wi-Fi del Mac. Se nemmeno questo funziona, usate i pulsanti +
+per contare le mani alzate: la presentazione funziona anche senza telefoni.
+
+COMANDI DELLE SLIDE
+- Freccia destra / barra spaziatrice: slide successiva. Freccia sinistra: precedente.
+- Pulsante ⛶ in basso a destra: schermo intero.
+- Il cronometro in basso si azzera da solo quando inizia la parte di un nuovo relatore: premete "Avvia".
