@@ -31,6 +31,8 @@ ACTS = {
                "options": ["Il coinvolgimento", "L'autoefficacia", "Il numero di assenze"]},
     "quiz-2": {"type": "quiz", "title": "Cosa significa la sigla del progetto Mosep?",
                "options": ["More Self Esteem with ePortfolios", "Modern School E-Portfolio", "Motivation and Self Evaluation Project"]},
+    "quaderni": {"type": "poll", "title": "Quale dei due quaderni mostra un feedback «learning-centred»?",
+               "options": ["Il quaderno 1", "Il quaderno 2", "Nessuno dei due"]},
     "voce":   {"type": "poll", "title": "Quale feedback preferite?", "options": ["Lo scritto", "Il vocale"]},
     "ladder": {"type": "ladder", "title": "Commentate il lavoro salendo la Ladder of Feedback",
                "work": "Per spiegare le frazioni in seconda primaria divido una pizza di cartone in 4 parti e chiedo ai bambini quante fette restano se ne mangio una.",
